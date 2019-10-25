@@ -7,9 +7,11 @@ import java.util.Date;
 
 public class Util {
     public static void analyzeLog(WebDriver driver) {
+
         LogEntries logEntries = driver.manage().logs().get(LogType.BROWSER);
+
         for (LogEntry entry : logEntries) {
-            if(entry.getMessage().startsWith("[LOGREQUEST]"))
+            if(entry.getMessage().contains("[LOGREQUEST]"))
                 System.out.println(new Date(entry.getTimestamp()) + " " + entry.getLevel() + " " + entry.getMessage());
         }
     }

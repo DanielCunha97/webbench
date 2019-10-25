@@ -27,7 +27,7 @@ public class KLMModel {
         String klmInput = null;
         switch(action){
             case "click":
-                klmInput = "MHPK";
+                klmInput = "HMPK";
                 break;
             case "submit":
                 klmInput = "MHPK";

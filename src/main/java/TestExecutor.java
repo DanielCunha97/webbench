@@ -4,10 +4,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.Select;
 import org.w3c.dom.NodeList;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 public class TestExecutor {
     private XMLParser test = null;
@@ -20,23 +26,34 @@ public class TestExecutor {
     public TestExecutor(XMLParser test){
         this.test= test;
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("–load-extension=" + "/Users/carloscunha/Downloads/chromeExt");
+        options.addExtensions(new File("/Users/carloscunha/Downloads/chromeExt.crx"));
+       // options.addArguments("–load-extension=" + "/Users/carloscunha/Downloads/chromeExt.crx");
         options.addArguments("--auto-open-devtools-for-tabs");
+
+        DesiredCapabilities caps = DesiredCapabilities.chrome();
+        LoggingPreferences logPrefs = new LoggingPreferences();
+        logPrefs.enable(LogType.BROWSER, Level.ALL);
+        caps.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+
+        options.merge(caps);
 
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
         NodeList actions= test.getDocument().getElementsByTagName("selenese");
 
-        for(int i= 0; i< actions.getLength(); i++){
-            NodeList childNodes = actions.item(i).getChildNodes();
-            executeCommand(
-                    childNodes.item(1).getTextContent(),
-                    childNodes.item(3).getTextContent(),
-                    childNodes.item(5).getTextContent()
-            );
-        }
 
+        try {
+
+            for (int i = 0; i < actions.getLength(); i++) {
+                NodeList childNodes = actions.item(i).getChildNodes();
+                executeCommand(
+                        childNodes.item(1).getTextContent(),
+                        childNodes.item(3).getTextContent(),
+                        childNodes.item(5).getTextContent()
+                );
+            }
+        }catch(Exception e){ e.printStackTrace(); }
 
         System.out.println("Total time: " +logger.calculateTotalTime());
 
