@@ -2,6 +2,7 @@ import java.util.HashMap;
 
 public class KLMModel {
     private HashMap<Character,Float> timeMap = new HashMap<Character,Float>();
+    private HashMap<Character,Integer> countOperators = new HashMap<Character,Integer>();
     private static KLMModel model = null;
 
     private KLMModel() {
@@ -9,10 +10,13 @@ public class KLMModel {
     }
 
     private void fillTimeMap() {
-        this.timeMap.put('K', 0.2f);
+        this.timeMap.put('K', 0.3f);
         this.timeMap.put('P', 1.1f);
+        this.timeMap.put('B', 0.1f);
         this.timeMap.put('H', 0.4f);
         this.timeMap.put('M', 1.35f);
+
+        // operador W
     }
 
 
@@ -22,18 +26,23 @@ public class KLMModel {
         return model;
     }
 
-    public double getPredictedTime(String action, double distance, double size){
-
+    public String getKLMInput(String action, String typedValue){
         String klmInput = null;
         switch(action){
+            case "open": //terá de ser introduzido o valor do operador W
+                klmInput = "MH" + typedValue.replaceAll(".","K");
+                break;
+            case "type": //Key
+                klmInput = "MHP" + typedValue.replaceAll(".","K");
+                break;
             case "click":
-                klmInput = "HMPK";
+                klmInput = "HMPB";
                 break;
             case "submit":
-                klmInput = "MHPK";
+                klmInput = "MHPB";
                 break;
             case "close":
-                klmInput = "MHPK";
+                klmInput = "MHPB";
                 break;
             case "mouseOver":
                 klmInput = "MHPK";
@@ -44,6 +53,33 @@ public class KLMModel {
             default:
                 throw new AssertionError(action + "is and invalid action");
         }
+
+        return klmInput;
+    }
+
+    public double getPredictedTime(String action, double distance, double size){
+
+        String klmInput = null;
+       /* switch(action){
+            case "click":
+                klmInput = "HMPB";
+                break;
+            case "submit":
+                klmInput = "MHPB";
+                break;
+            case "close":
+                klmInput = "MHPB";
+                break;
+            case "mouseOver":
+                klmInput = "MHPK";
+                break;
+            case "select":
+                klmInput = "MHPK";
+                break;
+            default:
+                throw new AssertionError(action + "is and invalid action");
+        }*/
+       klmInput = getKLMInput(action,null);
 
         double predictedTime = calculateTotalTime(distance, size, klmInput);
 
@@ -57,16 +93,17 @@ public class KLMModel {
     public double getPredictedTime(String action, String typedValue, double distance, double size){
 
         String klmInput = null;
-        switch(action){
-            case "open":
+        /*switch(action){
+            case "open": //terá de ser introduzido o valor do operador W
                 klmInput = "MH" + typedValue.replaceAll(".","K");
                 break;
-            case "type":
+            case "type": //Key
                 klmInput = "MHP" + typedValue.replaceAll(".","K");
                 break;
             default:
                 throw new AssertionError(action + "is and invalid action");
-        }
+        }*/
+        klmInput = getKLMInput(action,typedValue);
 
         double predictedTime = calculateTotalTime(distance, size, klmInput);
 

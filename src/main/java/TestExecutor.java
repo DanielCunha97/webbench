@@ -26,7 +26,7 @@ public class TestExecutor {
     public TestExecutor(XMLParser test){
         this.test= test;
         ChromeOptions options = new ChromeOptions();
-        options.addExtensions(new File("/Users/carloscunha/Downloads/chromeExt.crx"));
+        options.addExtensions(new File("D:/Documentos/Mestrado/dissertação/chromeDriver.crx"));
        // options.addArguments("–load-extension=" + "/Users/carloscunha/Downloads/chromeExt.crx");
         options.addArguments("--auto-open-devtools-for-tabs");
 
@@ -56,7 +56,12 @@ public class TestExecutor {
         }catch(Exception e){ e.printStackTrace(); }
 
         System.out.println("Total time: " +logger.calculateTotalTime());
-
+        System.out.println("Complete KLM Input result: " +logger.getCompleteKLMInput());
+        logger.calculateTotalOperators(logger.getCompleteKLMInput());
+        for(int i=0; i <logger.getOperatorsCount().size(); i++) {
+            System.out.println("Operator: " + logger.getOperatorsCount().get(i).operator + "- Total: " + logger.getOperatorsCount().get(i).count
+                    + "- Percentage: " + logger.getOperatorsCount().get(i).percentage + "%");
+        }
         Util.analyzeLog(driver);
     }
 
@@ -69,7 +74,8 @@ public class TestExecutor {
 
         switch(command){
             case "open":
-                logger.addItem(new LogWebItem(KLMModel.instance().getPredictedTime("open",value,0.0d,0.0d)));
+                logger.addItem(new LogWebItem(KLMModel.instance().getPredictedTime("open",value,0.0d,0.0d),
+                        KLMModel.instance().getKLMInput("open",value)));
                 driver.get(target);
                 break;
             case "click":
@@ -78,7 +84,8 @@ public class TestExecutor {
                 distance = calculateDistanceFromLastPoint(element);
                 size = element.getSize().getWidth()*element.getSize().getHeight();
 
-                logger.addItem(new LogWebItem(element.getLocation().getX(),element.getLocation().getY(), size, KLMModel.instance().getPredictedTime("click",distance,size)));
+                logger.addItem(new LogWebItem(element.getLocation().getX(),element.getLocation().getY(), size, KLMModel.instance().getPredictedTime("click",distance,size),
+                        KLMModel.instance().getKLMInput("click",null)));
                 element.click();
                 break;
             case "type":
@@ -87,7 +94,8 @@ public class TestExecutor {
                 distance = calculateDistanceFromLastPoint(element);
                 size = element.getSize().getWidth()*element.getSize().getHeight();
 
-                logger.addItem(new LogWebItem(KLMModel.instance().getPredictedTime("type", value, distance, size)));
+                logger.addItem(new LogWebItem(KLMModel.instance().getPredictedTime("type", value, distance, size),
+                        KLMModel.instance().getKLMInput("type",value)));
                 element.sendKeys(value);
                 break;
             case "submit":
@@ -96,7 +104,8 @@ public class TestExecutor {
                 distance = calculateDistanceFromLastPoint(element);
                 size = element.getSize().getWidth()*element.getSize().getHeight();
 
-                logger.addItem(new LogWebItem(element.getLocation().getX(),element.getLocation().getY(), size, KLMModel.instance().getPredictedTime("submit", distance, size)));
+                logger.addItem(new LogWebItem(element.getLocation().getX(),element.getLocation().getY(), size, KLMModel.instance().getPredictedTime("submit", distance, size),
+                        KLMModel.instance().getKLMInput("submit",null)));
                 element.click();
 
                 break;
@@ -117,7 +126,8 @@ public class TestExecutor {
                 distance = calculateDistanceFromLastPoint(element);
                 size = element.getSize().getWidth()*element.getSize().getHeight();
 
-                logger.addItem(new LogWebItem(element.getLocation().getX(),element.getLocation().getY(), size, KLMModel.instance().getPredictedTime("mouseOver", distance, size)));
+                logger.addItem(new LogWebItem(element.getLocation().getX(),element.getLocation().getY(), size, KLMModel.instance().getPredictedTime("mouseOver", distance, size),
+                        KLMModel.instance().getKLMInput("mouseOver",null)));
 
                 Actions builder = new Actions(driver);
                 builder.moveToElement(element).build().perform();
@@ -128,7 +138,8 @@ public class TestExecutor {
 
                 distance = calculateDistanceFromLastPoint(element);
                 size = element.getSize().getWidth()*element.getSize().getHeight();
-                logger.addItem(new LogWebItem(element.getLocation().getX(),element.getLocation().getY(), size, KLMModel.instance().getPredictedTime("select", distance, size)));
+                logger.addItem(new LogWebItem(element.getLocation().getX(),element.getLocation().getY(), size, KLMModel.instance().getPredictedTime("select", distance, size),
+                        KLMModel.instance().getKLMInput("select",null) ));
 
                 new Select(element).selectByVisibleText(value.split("=",2)[1]);
                 break;

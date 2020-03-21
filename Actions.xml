@@ -1,83 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCase>
-<selenese>
-	<command>open</command>
-	<target><![CDATA[http://www.estgv.ipv.pt/estgv/]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[xpath=(.//*[normalize-space(text()) and normalize-space(.)='Palavra-chave'])[1]/following::span[1]]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[id=inputtext1]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>type</command>
-	<target><![CDATA[id=inputtext1]]></target>
-	<value><![CDATA[cacunha]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[id=inputtext2]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>type</command>
-	<target><![CDATA[id=inputtext2]]></target>
-	<value><![CDATA[Ccgolias2]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[name=inputsubmit1]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[xpath=(.//*[normalize-space(text()) and normalize-space(.)='Carlos Augusto da Silva Cunha'])[2]/following::span[1]]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[link=Gestão de dados]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>mouseOver</command>
-	<target><![CDATA[link=Processos]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[link=Programa Previsto]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[name=id_parametros]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>select</command>
-	<target><![CDATA[name=id_parametros]]></target>
-	<value><![CDATA[label=CTeSP de Desenvolvimento para a Web e Dispositivos Móveis]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[name=bt_Verificar]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[xpath=(.//*[normalize-space(text()) and normalize-space(.)='Empreendedorismo e Gestão de Projetos'])[2]/following::input[1]]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>close</command>
-	<target><![CDATA[win_ser_1]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
+	<selenese>
+		<command>open</command>
+		<target><![CDATA[http://127.0.0.1:8000/register]]></target>
+		<value><![CDATA[]]></value>
+	</selenese>
+	<selenese>
+		<command>click</command>
+		<target><![CDATA[id=name]]></target>
+		<value><![CDATA[]]></value>
+	</selenese>
+	<selenese>
+		<command>type</command>
+		<target><![CDATA[id=name]]></target>
+		<value><![CDATA[testKLM]]></value>
+	</selenese>
+	<selenese>
+		<command>click</command>
+		<target><![CDATA[id=email]]></target>
+		<value><![CDATA[]]></value>
+	</selenese>
+	<selenese>
+		<command>type</command>
+		<target><![CDATA[id=email]]></target>
+		<value><![CDATA[testKLM@hotmail.com]]></value>
+	</selenese>
+	<selenese>
+		<command>click</command>
+		<target><![CDATA[id=password]]></target>
+		<value><![CDATA[]]></value>
+	</selenese>
+	<selenese>
+		<command>type</command>
+		<target><![CDATA[id=password]]></target>
+		<value><![CDATA[test123456]]></value>
+	</selenese>
+	<selenese>
+		<command>click</command>
+		<target><![CDATA[id=password-confirm]]></target>
+		<value><![CDATA[]]></value>
+	</selenese>
+	<selenese>
+		<command>type</command>
+		<target><![CDATA[id=password-confirm]]></target>
+		<value><![CDATA[test123456]]></value>
+	</selenese>
+	<selenese>
+		<command>click</command>
+		<target><![CDATA[xpath=(//button[@type='submit'])[2]]]></target>
+		<value><![CDATA[]]></value>
+	</selenese>
 </TestCase>
