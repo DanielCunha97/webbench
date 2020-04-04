@@ -38,7 +38,7 @@ public class TestLogger {
             OperatorsStatistics operatorsStatistics = new OperatorsStatistics();
             operatorsStatistics.count = operatorsCount.get(i).count;
             operatorsStatistics.operator = operatorsCount.get(i).operator;
-            operatorsStatistics.percentage = (float) operatorsCount.get(i).count/klmInput.length();
+            operatorsStatistics.percentage = ((float)operatorsCount.get(i).count/klmInput.length())*100;
             operatorsCount.set(i, operatorsStatistics);
         }
     }
