@@ -33,7 +33,7 @@ public class TestLogger {
         return operatorsCount;
     }
 
-    public void calculateOperatorsPercentage(String klmInput){
+    private void calculateOperatorsPercentage(String klmInput){
         for(int i =0; i < operatorsCount.size(); i++){
             OperatorsStatistics operatorsStatistics = new OperatorsStatistics();
             operatorsStatistics.count = operatorsCount.get(i).count;
@@ -51,7 +51,7 @@ public class TestLogger {
         return klmResult;
     }
 
-    public void calculateTotalOperators(String klmInput){
+    public void calculateTotalOperators(String klmInput, HashMap<Character,Float> timeMap){
         for(char c : klmInput.toCharArray()){
             if(c=='K' || c=='M' || c=='B' || c=='P' || c=='H') {
                 if (operatorsCount.isEmpty() || !operatorsCount.stream().anyMatch(p -> p.operator.equals(Character.toString(c)))) {
@@ -71,5 +71,19 @@ public class TestLogger {
             }
         }
         calculateOperatorsPercentage(klmInput);
+        calculateTimePerOperator(klmInput,timeMap);
+    }
+
+    private void calculateTimePerOperator(String klmInput, HashMap<Character,Float> timeMap){
+        for(int i =0; i < operatorsCount.size(); i++){
+            OperatorsStatistics operatorsStatistics = new OperatorsStatistics();
+            operatorsStatistics.count = operatorsCount.get(i).count;
+            operatorsStatistics.operator = operatorsCount.get(i).operator;
+            operatorsStatistics.percentage = operatorsCount.get(i).percentage;
+            if (timeMap.containsKey(operatorsCount.get(i).operator.charAt(0))){
+                operatorsStatistics.timePerOperator = timeMap.get(operatorsCount.get(i).operator.charAt(0)) * operatorsStatistics.count;
+            }
+            operatorsCount.set(i, operatorsStatistics);
+        }
     }
 }

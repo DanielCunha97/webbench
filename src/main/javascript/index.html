@@ -4,9 +4,6 @@
     <meta charset = "UTF-8">
     <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
-    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <link rel = "stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <title>KLM Report</title>
 </head>
@@ -16,102 +13,99 @@
 
     </div>
     <script >
-        // $(document).ready(function() {
-        //     $.ajax({
-        //         type: "GET",
-        //         url: "DataToCharts.csv",
-        //         dataType: "text",
-        //         success: function(data) {processData(data);}
-        //     });
-        // });
-
-
-        var ctx = document.getElementById('firstChart').getContext('2d');
         const xLabels = [];
-        var chart = new Chart(ctx, {
-            // The type of chart we want to create
-            type: 'bar',
-            // The data for our dataset
-            data: {
-                labels: xLabels,
-                datasets: [{
-                    label: null,
-                    backgroundColor: 'rgb(0, 0, 0)',
-                    borderColor: 'rgb(0, 0, 0)',
-                    data: [0, 10, 5, 2, 20, 30, 45]
-                }]
-            },
+        const yLabels = [];
 
-            // Configuration options go here
-            options: {
-                title: {
-                    display: true,
-                    fontFamily:'Roboto',
-                    text: ['Estimated total time per operator','Information on the total time for each operator'],
-                    fontSize: 16,
-                    
-                }              
+        createChart();
+        
+        async function createChart(){
+            await getData();
+                var ctx = document.getElementById('firstChart').getContext('2d');             
+                var chart = new Chart(ctx, {
+                    // The type of chart we want to create
+                    type: 'bar',
+                    // The data for our dataset
+                    data: {
+                        labels: xLabels,
+                        datasets: [{
+                            label: 'Information on the total time for each operator',
+                            fontFamily:'Roboto',
+                            backgroundColor: 'rgb(0, 0, 0)',
+                            borderColor: 'rgb(0, 0, 0)',
+                            data: yLabels
+                        }]
+                    },
+
+                    // Configuration options go here
+                    options: {
+                        title: {
+                            display: true,
+                            fontFamily:'Roboto',
+                            text: ['Estimated total time per operator'],
+                            fontSize: 16,                          
+                        },
+                        scales: {
+                            yAxes: [{
+                                scaleLabel:{
+                                    position: 'bottom',
+                                    display: true,
+                                    labelString: 'Time'
+                                },
+                            ticks: {
+                                beginAtZero: true,
+                                steps: 10,
+                                stepValue: 6,
+                                max: 100 //max value for the chart is 60
+                                }
+                            }
+                        ]
+                        }           
+                    }
+                });
+
             }
-        });
+        
 
+        async function getData(){
 
-        // function processData(allText) {
-        //     var allTextLines = allText.split(/\r\n|\n/);
-        //     var headers = allTextLines[0].split(',');
-        //     var lines = [];
+           await fetch('DataToCharts.csv')
+            .then(response => response.text())
+            .then(text => { console.log(text)
+                var csvArray = text.split('\n').slice(1)
+                console.log('csvArray ' + csvArray)
+                csvArray.forEach( row => {
+                 const columns = row.split(';')
+                 var klmOperator = columns[0]
+                 if(klmOperator == 'K'){
+                     klmOperator = ['Key Press', '(K)']
+                 }else if (klmOperator == 'M'){
+                    klmOperator = ['Mental','(M)']
+                 }else if (klmOperator == 'H'){
+                    klmOperator = ['Switch (M-K)','(H)']
+                 }else if (klmOperator == 'B'){
+                    klmOperator = ['Mouse click','(B)']
+                 }else if (klmOperator == 'P'){
+                    klmOperator = ['Mouse Point','(P)']
+                 }
+                 xLabels.push(klmOperator)
+                 const times = columns[1]
+                 yLabels.push(times)
+                 console.log('operators ' + klmOperator, 'times ' + times)
+             });
+            });
 
-        //     for (var i=1; i<allTextLines.length; i++) {
-        //         var data = allTextLines[i].split(',');
-        //         if (data.length == headers.length) {
-
-        //             var tarr = [];
-        //             for (var j=0; j<headers.length; j++) {
-        //                 tarr.push(headers[j]+":"+data[j]);
-        //             }
-        //         lines.push(tarr);
-        //     }
-        // }
-
-
-        // getData('C:/Users/Daniel Cunha/Desktop/webbench/DataToCharts.csv');
-
-        // function getData(path){
-
-        //     var csvFile = new XMLHttpRequest();
-        //     csvFile.open();
-
-
-    //         const reader = new FileReader(path);
-    //         //reader.readAsBinaryString(path);
-    //        // const table = path.split('\n').slice(0);
-    //     //     console.log(reader);
-    //     //    /* table.forEach( row => {
-    //     //         const columns = row.split(',');
-    //     //         const klmOperator = columns[0];
-    //     //         xLabels.push(klmOperator);
-    //     //         const times = columns[1];
-    //     //         console.log(klmOperator,times);
-    //     //     });*/
-    //     //     reader.onload = function () {
-    //     //         document.getElementById('csvData').innerHTML = reader.result;
-    //     //     };
-    //         // start reading the file. When it is done, calls the onload event defined above.
-    //         //reader.readAsBinaryString(fileInput.files[0]);
-
-    //         const fs = require('fs').remote;
-
-            
-  
-    //         fs.readFile(path, (err, data) => { 
-    //             if (err) throw err; 
-            
-    //             console.log(data.toString()); 
-    //         }) 
-
-    fetch('DataToCharts.csv')
-  .then(response => response.text())
-  .then(text => console.log(text))
-
+            // const response = fetch ('DataToCharts.csv');
+            // const data = response.text;
+            // console.log(data);
+            // const table = path.split('\n').slice(0);
+            // table.forEach( row => {
+            //     const columns = row.split(',');
+            //     const klmOperator = columns[0];
+            //     xLabels.push(klmOperator);
+            //     const times = columns[1];
+            //     console.log(klmOperator,times);
+            // });
+        }
    
 
     </script>

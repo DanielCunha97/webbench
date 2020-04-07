@@ -58,7 +58,7 @@ public class TestExecutor {
 
         System.out.println("Total time: " +logger.calculateTotalTime());
         System.out.println("Complete KLM Input result: " +logger.getCompleteKLMInput());
-        logger.calculateTotalOperators(logger.getCompleteKLMInput());
+        logger.calculateTotalOperators(logger.getCompleteKLMInput(), KLMModel.instance().getOperatorsTimes());
 
 
         if (logger.getOperatorsCount().size() > 0 ) {
@@ -67,7 +67,7 @@ public class TestExecutor {
             // go through the array and return the operators with their percentage
             for(int i=0; i <logger.getOperatorsCount().size(); i++) {
                 System.out.println("Operator: " + logger.getOperatorsCount().get(i).operator + "- Total: " + logger.getOperatorsCount().get(i).count
-                        + "- Percentage: " + logger.getOperatorsCount().get(i).percentage + "%");
+                        + "- Percentage: " + logger.getOperatorsCount().get(i).percentage + "%" + "- TimePerOperator: " + logger.getOperatorsCount().get(i).timePerOperator + "s");
             }
         }
 
