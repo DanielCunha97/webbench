@@ -4,6 +4,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class CsvWriter {
+    String klmResult;
+    public void SaveKLMString(String klmResult){
+        this.klmResult = klmResult;
+    }
 
     public void SaveStatistics (ArrayList<OperatorsStatistics> operatorsStatistics){
         try {
@@ -24,6 +28,7 @@ public class CsvWriter {
                 sb.append(operatorsStatistics.get(i).timePerOperator);
                 sb.append('\n');
             }
+            sb.append(klmResult);
             writer.write(sb.toString());
             writer.close();
         } catch (Exception e) {

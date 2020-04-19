@@ -63,7 +63,9 @@ public class TestExecutor {
 
         if (logger.getOperatorsCount().size() > 0 ) {
             // save this values in a csv file
+            csvWriter.SaveKLMString(logger.getCompleteKLMInput());
             csvWriter.SaveStatistics(logger.getOperatorsCount());
+
             // go through the array and return the operators with their percentage
             for(int i=0; i <logger.getOperatorsCount().size(); i++) {
                 System.out.println("Operator: " + logger.getOperatorsCount().get(i).operator + "- Total: " + logger.getOperatorsCount().get(i).count
