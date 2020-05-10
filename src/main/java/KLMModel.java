@@ -9,15 +9,14 @@ public class KLMModel {
     private KLMModel() {
         fillTimeMap();
     }
-
+    float wOperatorTime = 0.0f;
     private void fillTimeMap() {
         this.timeMap.put('K', 0.3f);
         this.timeMap.put('P', 1.1f);
         this.timeMap.put('B', 0.1f);
         this.timeMap.put('H', 0.4f);
         this.timeMap.put('M', 1.35f);
-
-        // operador W
+        this.timeMap.put('W', wOperatorTime);  // the value is dynamic because depends from performance of network..
     }
 
     public HashMap<Character,Float> getOperatorsTimes() {
