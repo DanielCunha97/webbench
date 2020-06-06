@@ -1,15 +1,17 @@
+import de.sstoehr.harreader.HarReaderException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class KLMModel {
     private HashMap<Character,Float> timeMap = new HashMap<Character,Float>();
-    private HashMap<Character,Integer> countOperators = new HashMap<Character,Integer>();
     private static KLMModel model = null;
+    HarFileModel harFileModel = new HarFileModel();
 
-    private KLMModel() {
+    private KLMModel()  {
         fillTimeMap();
     }
-    float wOperatorTime = 0.0f;
+    float wOperatorTime = /*harFileModel.GetTime()*/0.0f ;
     private void fillTimeMap() {
         this.timeMap.put('K', 0.3f);
         this.timeMap.put('P', 1.1f);

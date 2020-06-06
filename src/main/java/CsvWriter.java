@@ -4,7 +4,12 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class CsvWriter {
-    String klmResult;
+    private String klmResult;
+
+    public CsvWriter(){
+
+    }
+
     public void SaveKLMString(String klmResult){
         this.klmResult = klmResult;
     }
@@ -44,4 +49,27 @@ public class CsvWriter {
         }
     }
 
+    public void SaveDiffResourcesTimes (ArrayList<ResourcesTimeModel> resourcesTimeModels){
+        try {
+            PrintWriter writer = new PrintWriter(new File("C:/Users/Daniel Cunha/Desktop/webbench/src/ResourcesTimes.csv"));
+            StringBuilder sb = new StringBuilder();
+            sb.append("First Resource");
+            sb.append(';');
+            sb.append("Second Resource");
+            sb.append(';');
+            sb.append("Time difference between them");
+            sb.append('\n');
+            resourcesTimeModels.forEach(resource -> {
+                sb.append(resource.firstRsrc + ";");
+                sb.append(resource.secondRsrc + ";");
+                sb.append(resource.diffResourceTime);
+                sb.append('\n');
+            });
+            writer.write(sb.toString());
+            writer.close();
+        } catch (Exception e) {
+            // e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+    }
 }
