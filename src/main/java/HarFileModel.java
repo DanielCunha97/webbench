@@ -47,8 +47,9 @@ public class HarFileModel {
             HarReader harReader = new HarReader();
             Har har = harReader.readFromFile(new File("C:/Users/Daniel Cunha/Desktop/webbench/src/KatalonHarFile.har"));
             har.getLog().getEntries().forEach(entry -> {
+                // to add different keys, because exists resources with the same url
                 count[0]++;
-                timeMap.put(count[0] + "-" + entry.getResponse().getContent().getMimeType(), (float) entry.getTime());
+                timeMap.put(count[0] + "-" + entry.getRequest().getUrl(), (float) entry.getTime());
             });
             // calculate time difference between resource 1 and resource 2
             calculateDiffResourcesTimes();
