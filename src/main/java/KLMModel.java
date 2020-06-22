@@ -5,11 +5,12 @@ public class KLMModel {
     private HashMap<Character,Float> timeMap = new HashMap<Character,Float>();
     private HashMap<Character,Integer> countOperators = new HashMap<Character,Integer>();
     private static KLMModel model = null;
+    HarFileModel harFileModel = new HarFileModel();
 
     private KLMModel() {
         fillTimeMap();
     }
-    float wOperatorTime = 0.0f;
+    float wOperatorTime = /*harFileModel.GetTime()*/0.0f;
     private void fillTimeMap() {
         this.timeMap.put('K', 0.3f);
         this.timeMap.put('P', 1.1f);
@@ -67,8 +68,8 @@ public class KLMModel {
 
         double predictedTime = calculateTotalTime(distance, size, klmInput);
 
-        System.out.println("size:" + size);
-        System.out.println("distance:" + distance);
+       // System.out.println("size:" + size);
+       // System.out.println("distance:" + distance);
         System.out.println("predicted time:" + predictedTime);
 
         return predictedTime;
@@ -81,8 +82,8 @@ public class KLMModel {
 
         double predictedTime = calculateTotalTime(distance, size, klmInput);
 
-        System.out.println("size:" + size);
-        System.out.println("distance:" + distance);
+       // System.out.println("size:" + size);
+       // System.out.println("distance:" + distance);
         System.out.println("predicted time:" + predictedTime);
 
         return predictedTime;
@@ -93,7 +94,7 @@ public class KLMModel {
         for(char c : klmInput.toCharArray()){
             totalTime += this.timeMap.get(c)+ ((c=='P' && distance>0)?fittsLawIndexDifficulty(distance,size):0);
         }
-
+        System.out.println("Klm String" + klmInput);
         return totalTime;
     }
 

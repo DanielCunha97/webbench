@@ -1,8 +1,8 @@
 public class OperatorsStatistics {
-    String operator;
-    int count;
-    float percentage;
-    float timePerOperator;
+    public String operator;
+    public int count;
+    public float percentage;
+    public float timePerOperator;
 
     public OperatorsStatistics(String operator, int count, float percentage, float timePerOperator) {
         this.operator = operator;

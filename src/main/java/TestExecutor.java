@@ -8,7 +8,9 @@ import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
@@ -18,7 +20,7 @@ import java.util.logging.Level;
 public class TestExecutor {
     private XMLParser test = null;
 
-    private WebDriver driver;
+    static  private WebDriver driver;
     private boolean acceptNextAlert = true;
     private StringBuffer verificationErrors = new StringBuffer();
     private TestLogger logger = new TestLogger();
@@ -28,10 +30,11 @@ public class TestExecutor {
         this.test= test;
         ChromeOptions options = new ChromeOptions();
         options.addExtensions(new File("D:/Documentos/Mestrado/dissertação/chromeDriver.crx"));
-       // options.addArguments("–load-extension=" + "/Users/carloscunha/Downloads/chromeExt.crx");
+        //options.addArguments("–load-extension=" + "/Users/ruipedroduarte/Downloads/chromeDriver.crx");
         options.addArguments("--auto-open-devtools-for-tabs");
 
-        DesiredCapabilities caps = DesiredCapabilities.chrome();
+        ChromeOptions caps = new ChromeOptions();
+        //DesiredCapabilities caps = DesiredCapabilities.chrome();
         LoggingPreferences logPrefs = new LoggingPreferences();
         logPrefs.enable(LogType.BROWSER, Level.ALL);
         caps.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
@@ -45,9 +48,13 @@ public class TestExecutor {
 
 
         try {
-
+            System.out.println("Actions length: " +actions.getLength());
             for (int i = 0; i < actions.getLength(); i++) {
+
                 NodeList childNodes = actions.item(i).getChildNodes();
+                //System.out.println("Node 1: " +childNodes.item(1).getTextContent());
+               // System.out.println("Node 3: " +childNodes.item(3).getTextContent());
+               // System.out.println("Node 5: " +childNodes.item(5).getTextContent());
                 executeCommand(
                         childNodes.item(1).getTextContent(),
                         childNodes.item(3).getTextContent(),
@@ -62,7 +69,7 @@ public class TestExecutor {
 
 
         if (logger.getOperatorsCount().size() > 0 ) {
-            // save this values in a csv file
+            // save these values in a csv file
             csvWriter.SaveKLMString(logger.getCompleteKLMInput());
             csvWriter.SaveStatistics(logger.getOperatorsCount());
 
@@ -87,6 +94,7 @@ public class TestExecutor {
             case "open":
                 logger.addItem(new LogWebItem(KLMModel.instance().getPredictedTime("open",value,0.0d,0.0d),
                         KLMModel.instance().getKLMInput("open",value)));
+                System.out.println("Opening page " + target);
                 driver.get(target);
                 break;
             case "click":
@@ -105,6 +113,14 @@ public class TestExecutor {
                 distance = calculateDistanceFromLastPoint(element);
                 size = element.getSize().getWidth()*element.getSize().getHeight();
 
+                logger.addItem(new LogWebItem(KLMModel.instance().getPredictedTime("type", value, distance, size),
+                        KLMModel.instance().getKLMInput("type",value)));
+                element.sendKeys(value);
+                break;
+            case "editContent": //new command found in a browse
+                element = findElement(target);
+                distance = calculateDistanceFromLastPoint(element);
+                size = element.getSize().getWidth()*element.getSize().getHeight();
                 logger.addItem(new LogWebItem(KLMModel.instance().getPredictedTime("type", value, distance, size),
                         KLMModel.instance().getKLMInput("type",value)));
                 element.sendKeys(value);
@@ -162,37 +178,74 @@ public class TestExecutor {
         double lastY = logger.getLastWebItem().getCoordY()!=null?logger.getLastWebItem().getCoordY():0;
 
         double distance = Math.sqrt(
-                            Math.pow(element.getLocation().getX()-lastX,2)+
-                            Math.pow(element.getLocation().getY()-lastY,2)
-                        );
+                Math.pow(element.getLocation().getX()-lastX,2)+
+                        Math.pow(element.getLocation().getY()-lastY,2)
+        );
 
         return distance;
     }
 
     private WebElement findElement(String target) {
-        WebElement element;
+        WebElement element = null;
         String[] keyValue;
-        keyValue = target.split("=",2);
+        String[] KeyForSplit;
 
-        switch(keyValue[0]){
-            case "id":
-                element = driver.findElement(By.id(keyValue[1]));
-                break;
-            case "name":
+        if (target.contains("="))
+        {
+            keyValue = target.split("=",2);
+            System.out.println(" Keyvalue 0: "+  keyValue[0]);
+            System.out.println(" Keyvalue 1: " +keyValue[1]);
+            if (keyValue[0].equals("id"))
+            {
+                System.out.println(" Id: " +keyValue[1]);
+                KeyForSplit = keyValue[1].split("]",2);
+                element = driver.findElement(By.id(KeyForSplit[0]));
+            }
+            else if (keyValue[0].equals("name"))
+            {
+                System.out.println(" Name: " +keyValue[1]);
                 element = driver.findElement(By.name(keyValue[1]));
-                break;
-            case "xpath":
+            }
+            else if (keyValue[0].contains("button"))
+            {
+                System.out.println(" Button: " +keyValue[1]);
+                element = driver.findElement(By.xpath(target));
+            }
+            else if (keyValue[0].equals("xpath"))
+            {
+                System.out.println("Xpath Name: " +keyValue[1]);
                 element = driver.findElement(By.xpath(keyValue[1]));
-                break;
-            case "link":
+            }
+            else if (target.contains("div") || target.contains("form") || target.contains("span") || target.contains("href"))
+            {
+                System.out.println("Menu Name: " +target);
+                element = driver.findElement(By.xpath(target));
+            }
+            else if (keyValue[0].equals("link"))
+            {
+                System.out.println("Link Name: " +keyValue[1]);
                 element = driver.findElement(By.linkText(keyValue[1]));
-                break;
-            default:
+            }
+            else
                 throw new AssertionError("target should be id,name,xpath, or link");
 
         }
-
+        else //target does not contain "=", then extract from path
+        {
+            if (target.contains("div") || target.contains("form") || target.contains("span") || target.contains("href"))
+            {
+                System.out.println("Menu Name 2: " +target);
+                element = driver.findElement(By.xpath(target));
+            }
+            else if (target.contains("button"))
+            {
+                System.out.println(" Button: " +target);
+                element = driver.findElement(By.xpath(target));
+            }
+        }
         return element;
+
+
     }
 
 }

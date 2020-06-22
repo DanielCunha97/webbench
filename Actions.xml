@@ -2,52 +2,112 @@
 <TestCase>
 	<selenese>
 		<command>open</command>
-		<target><![CDATA[http://127.0.0.1:8000/register]]></target>
+		<target><![CDATA[https://designrevision.com/demo/shards-dashboard-lite/index.html]]></target>
 		<value><![CDATA[]]></value>
 	</selenese>
 	<selenese>
 		<command>click</command>
-		<target><![CDATA[id=name]]></target>
+		<target><![CDATA[//li[6]/a/span]]></target>
 		<value><![CDATA[]]></value>
 	</selenese>
 	<selenese>
-		<command>type</command>
-		<target><![CDATA[id=name]]></target>
-		<value><![CDATA[testKLM]]></value>
-	</selenese>
-	<selenese>
 		<command>click</command>
-		<target><![CDATA[id=email]]></target>
+		<target><![CDATA[id=feFirstName]]></target>
 		<value><![CDATA[]]></value>
 	</selenese>
 	<selenese>
 		<command>type</command>
-		<target><![CDATA[id=email]]></target>
-		<value><![CDATA[testKLM@hotmail.com]]></value>
+		<target><![CDATA[id=feFirstName]]></target>
+		<value><![CDATA[SieRui rra]]></value>
 	</selenese>
 	<selenese>
 		<command>click</command>
-		<target><![CDATA[id=password]]></target>
+		<target><![CDATA[id=feLastName]]></target>
 		<value><![CDATA[]]></value>
 	</selenese>
 	<selenese>
 		<command>type</command>
-		<target><![CDATA[id=password]]></target>
-		<value><![CDATA[test123456]]></value>
+		<target><![CDATA[id=feLastName]]></target>
+		<value><![CDATA[BrooksPedro]]></value>
 	</selenese>
 	<selenese>
 		<command>click</command>
-		<target><![CDATA[id=password-confirm]]></target>
+		<target><![CDATA[id=feEmailAddress]]></target>
+		<value><![CDATA[]]></value>
+	</selenese>
+	<selenese>
+		<command>click</command>
+		<target><![CDATA[id=feEmailAddress]]></target>
+		<value><![CDATA[]]></value>
+	</selenese>
+	<selenese>
+		<command>doubleClick</command>
+		<target><![CDATA[id=feEmailAddress]]></target>
+		<value><![CDATA[]]></value>
+	</selenese>
+	<selenese>
+		<command>click</command>
+		<target><![CDATA[id=feEmailAddress]]></target>
 		<value><![CDATA[]]></value>
 	</selenese>
 	<selenese>
 		<command>type</command>
-		<target><![CDATA[id=password-confirm]]></target>
-		<value><![CDATA[test123456]]></value>
+		<target><![CDATA[id=feEmailAddress]]></target>
+		<value><![CDATA[asdasd@asdasdsfa]]></value>
 	</selenese>
 	<selenese>
 		<command>click</command>
-		<target><![CDATA[xpath=(//button[@type='submit'])[2]]]></target>
+		<target><![CDATA[id=fePassword]]></target>
+		<value><![CDATA[]]></value>
+	</selenese>
+	<selenese>
+		<command>type</command>
+		<target><![CDATA[id=fePassword]]></target>
+		<value><![CDATA[asdasdasda]]></value>
+	</selenese>
+	<selenese>
+		<command>click</command>
+		<target><![CDATA[id=feInputAddress]]></target>
+		<value><![CDATA[]]></value>
+	</selenese>
+	<selenese>
+		<command>type</command>
+		<target><![CDATA[id=feInputAddress]]></target>
+		<value><![CDATA[sdasdagdasdasd fasf]]></value>
+	</selenese>
+	<selenese>
+		<command>click</command>
+		<target><![CDATA[id=feInputCity]]></target>
+		<value><![CDATA[]]></value>
+	</selenese>
+	<selenese>
+		<command>type</command>
+		<target><![CDATA[id=feInputCity]]></target>
+		<value><![CDATA[VIseu]]></value>
+	</selenese>
+	<selenese>
+		<command>click</command>
+		<target><![CDATA[id=feInputState]]></target>
+		<value><![CDATA[]]></value>
+	</selenese>
+	<selenese>
+		<command>select</command>
+		<target><![CDATA[id=feInputState]]></target>
+		<value><![CDATA[label=...]]></value>
+	</selenese>
+	<selenese>
+		<command>click</command>
+		<target><![CDATA[id=inputZip]]></target>
+		<value><![CDATA[]]></value>
+	</selenese>
+	<selenese>
+		<command>type</command>
+		<target><![CDATA[id=inputZip]]></target>
+		<value><![CDATA[3500]]></value>
+	</selenese>
+	<selenese>
+		<command>click</command>
+		<target><![CDATA[//button[@type='submit']]]></target>
 		<value><![CDATA[]]></value>
 	</selenese>
 </TestCase>
