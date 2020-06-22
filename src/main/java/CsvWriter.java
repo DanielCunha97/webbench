@@ -16,7 +16,8 @@ public class CsvWriter {
 
     public void SaveStatistics (ArrayList<OperatorsStatistics> operatorsStatistics){
         try {
-            PrintWriter writer = new PrintWriter(new File("D:/Programas/XAMPP/htdocs/ChartsKLM/DataToCharts.csv"));
+            double totaltime = 0.0;
+            PrintWriter writer = new PrintWriter(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/javascript/files/DataToCharts.csv"));
             StringBuilder sb = new StringBuilder();
             sb.append("Operator");
             sb.append(';');
@@ -29,9 +30,11 @@ public class CsvWriter {
             for(int i=0; i <operatorsStatistics.size(); i++) {
                 sb.append(operatorsStatistics.get(i).operator + ";");
                 sb.append(operatorsStatistics.get(i).count + ";");
-                sb.append(operatorsStatistics.get(i).percentage + ";");
-                sb.append(operatorsStatistics.get(i).timePerOperator);
+                //sb.append(operatorsStatistics.get(i).percentage + ";");
+                sb.append((double) Math.round(operatorsStatistics.get(i).percentage*100)/100 + ";");
+                sb.append((double) Math.round(operatorsStatistics.get(i).timePerOperator*100)/100);
                 sb.append('\n');
+                totaltime += operatorsStatistics.get(i).timePerOperator;
             }
             // Change this code later!!
             sb.append("W" + ";");
@@ -40,6 +43,8 @@ public class CsvWriter {
             sb.append(0.0);
             sb.append('\n');
             //----------------------------------
+            sb.append((double) Math.round(totaltime*100)/100);
+            sb.append('\n');
             sb.append(klmResult);
             writer.write(sb.toString());
             writer.close();
@@ -51,7 +56,7 @@ public class CsvWriter {
 
     public void SaveDiffResourcesTimes (ArrayList<ResourcesTimeModel> resourcesTimeModels){
         try {
-            PrintWriter writer = new PrintWriter(new File("C:/Users/Daniel Cunha/Desktop/webbench/src/ResourcesTimes.csv"));
+            PrintWriter writer = new PrintWriter(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/java/files/ResourcesTimes.csv"));
             StringBuilder sb = new StringBuilder();
             sb.append("First Resource");
             sb.append(';');

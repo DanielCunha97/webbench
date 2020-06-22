@@ -45,7 +45,7 @@ public class HarFileModel {
         int[] count = new int[]{0};
         try {
             HarReader harReader = new HarReader();
-            Har har = harReader.readFromFile(new File("C:/Users/Daniel Cunha/Desktop/webbench/src/KatalonHarFile.har"));
+            Har har = harReader.readFromFile(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/java/files/KatalonHarFile.har"));
             har.getLog().getEntries().forEach(entry -> {
                 // to add different keys, because exists resources with the same url
                 count[0]++;
