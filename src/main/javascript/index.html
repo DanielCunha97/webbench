@@ -61,7 +61,7 @@
             </div>
         </div>
 
-        <button style = "margin-top: 25px;" type="button" class="btn btn-dark btn-block"> See Recommendations</button>
+        <button style = "margin-top: 25px;" id ="recommendationsBtn" type="button" class="btn btn-dark btn-block"> See Recommendations</button>
   
     </div>
 
@@ -69,8 +69,6 @@
  
 	
 	<script >
-        const recomendationsArray = ["The component uses too many text inputs. If you are dealing with a text field entry based on names, username and password, the suggestion is to add to the  interface a component 'Save my login data'"];
-       
         const reload = document.querySelector('#reload');
         const xLabels = [];
         const yLabels = [];
@@ -80,22 +78,20 @@
         const yLabelsSecond = [];
         const yLabelsThird = [];
         var countInteractions =0;
-        var klmSequence = "";
-		var klmTime = "";
+        var klmSequence = document.getElementById('klmSeq');
+		var klmTime = document.getElementById('klmTime');
 
         createChart();
         ChartTotalInteractions();
         ChartPercentages();
         createEventsChart();
 
-        window.onload = function(){
-            document.getElementById('klmSeq').innerHTML = klmSequence;
-			document.getElementById('klmTime').innerHTML = klmTime;
+        document.getElementById("recommendationsBtn").onclick = function () {
+            location.href = "http://localhost/webbench/src/main/javascript/recomendationsPage.html";
         };
 		
         reload.addEventListener('click', () => {
             document.getElementById('klmSeq').innerHTML = klmSequence;
-			document.getElementById('klmTime').innerHTML = klmTime;
         });
 
        async function createChart(){
@@ -217,10 +213,10 @@
                 else if(columns[0][2] != undefined){
 					var matcheNumber = klmOperator.match(/\d+/g);
 					if(matcheNumber != null){
-						klmTime = 'Estimated time to complete task: ' + klmOperator + ' secs';
+						klmTime.innerHTML = 'Estimated time to complete task: ' + klmOperator + ' secs';
 						console.log('Time, Penultima linha:' + klmTime);
 					}else{
-						klmSequence = klmOperator;
+						klmSequence.innerHTML = klmOperator;
 						console.log('elsIF:' + klmSequence);
 					}                  
                 }

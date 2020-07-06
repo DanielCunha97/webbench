@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset = "UTF-8">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+      <style>
+      .dotted {
+        border-left: 2px dotted gray;
+        height: 500px;
+      }
+      .solidLine{
+        width: 80%; 
+        text-align: left; 
+        border-bottom: 2px solid grey; 
+        line-height: 0.1em;
+        margin: 10px 0 20px;      
+      }
+      h4 span { 
+        background:#fff; 
+        padding-right: 15px; 
+      }
+      </style>
+    <title>KLM Report</title>
+</head>
+<body >
+     <div class="container-fluid">
+    	<div class="row ">
+	        <div class="col-md-12">
+	            <h3 style = "margin-top:40px;"> Recommendations </h3>
+	        </div>
+	    </div>
+	    <div class="row ">
+	        <div class="col-md-6">
+                <h4 class ="solidLine"><span>Facts</span></h4>
+            </div>           
+	        <div class="col-md-6">
+                <div class ="dotted">
+                    <div style="padding-left:25px; float:left;">
+                        <h4 style = "margin-bottom:15px; float:left;"> Other Recommendations</h4>
+                        <h7 style = "float:left;"> Based on operators prevalence, try to follow the following recommendations</h7>
+                    </div>
+                </div>               
+	        </div>
+	</div>
+
+    <div class = "container-fluid" >
+        <div style = "margin-top: 20px;" class="row"><!--style="position: relative; height:30vh; width:40vw"-->
+            <div class="col-md-4">
+                <canvas id = "firstChart" height="180vh"></canvas>
+            </div>
+            <div class="col-md-4">
+                <canvas id = "secondChart" height="180vh"></canvas>
+            </div> 
+            <div class="col-md-4">
+                <canvas id = "thirdChart" height="180vh"></canvas>
+            </div> 
+        </div>
+
+        <div style = "margin-top: 20px;" class="row" ><!--style="position: relative; height:30vh; width:40vw"-->
+            <div class="col-md-12">
+   				<canvas id="EventsChart" height="250vh"></canvas>
+            </div>
+        </div>
+  
+    </div>
+
+
+ 
+	
+	<script >
+        const recomendationsArray = ["The component uses too many text inputs. If you are dealing with a text field entry based on names, username and password, the suggestion is to add to the interface a component 'Save my login data'",
+        "",""];
+
+
+
+
+    </script>
+
+</body>
+</html>

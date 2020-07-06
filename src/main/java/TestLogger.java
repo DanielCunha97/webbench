@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TestLogger {
+    public String cleanKlmString= new String("");
     private ArrayList<LogWebItem> log = new ArrayList<LogWebItem>();
     private ArrayList<OperatorsStatistics> operatorsCount = new ArrayList<OperatorsStatistics>();
 
@@ -48,7 +49,7 @@ public class TestLogger {
         for(LogWebItem item : log){
             klmResult += item.getKLMInput(); //Total of operations from KLM input
         }
-        return klmResult;
+         return cleanKLMString(klmResult);
     }
 
     public void calculateTotalOperators(String klmInput, HashMap<Character,Float> timeMap){
@@ -62,28 +63,40 @@ public class TestLogger {
                 }
             }
             for(int i=0; i <operatorsCount.size(); i++){
-                    if (operatorsCount.get(i).operator.equals(Character.toString(c))) {
-                        OperatorsStatistics operatorsStatistics = new OperatorsStatistics();
-                        operatorsStatistics.count = operatorsCount.get(i).count + 1;
-                        operatorsStatistics.operator = Character.toString(c);
-                        operatorsCount.set(i, operatorsStatistics);
-                    }
+                if (operatorsCount.get(i).operator.equals(Character.toString(c))) {
+                    OperatorsStatistics operatorsStatistics = new OperatorsStatistics();
+                    operatorsStatistics.count = operatorsCount.get(i).count + 1;
+                    operatorsStatistics.operator = Character.toString(c);
+                    operatorsCount.set(i, operatorsStatistics);
+                }
             }
         }
         calculateOperatorsPercentage(klmInput);
-        calculateTimePerOperator(klmInput,timeMap);
+        calculateTimePerOperator(timeMap);
     }
 
-    private void calculateTimePerOperator(String klmInput, HashMap<Character,Float> timeMap){
+    private void calculateTimePerOperator(HashMap<Character,Float> timeMap){
         for(int i =0; i < operatorsCount.size(); i++){
             OperatorsStatistics operatorsStatistics = new OperatorsStatistics();
             operatorsStatistics.count = operatorsCount.get(i).count;
             operatorsStatistics.operator = operatorsCount.get(i).operator;
             operatorsStatistics.percentage = operatorsCount.get(i).percentage;
             if (timeMap.containsKey(operatorsCount.get(i).operator.charAt(0))){
-                operatorsStatistics.timePerOperator = timeMap.get(operatorsCount.get(i).operator.charAt(0)) * operatorsStatistics.count;
+                    operatorsStatistics.timePerOperator = timeMap.get(operatorsCount.get(i).operator.charAt(0)) * operatorsStatistics.count;
             }
             operatorsCount.set(i, operatorsStatistics);
         }
+    }
+
+    //clean KLM string (ex: PB....PB, remove operator inside this sequence(H operator))
+    private String cleanKLMString(String klmInput){
+        if(klmInput != null){
+            while(!klmInput.replaceFirst("PBHPB", "PBPB").equals(klmInput)){
+                klmInput = klmInput.replaceFirst("PBHPB","PBPB");
+            }
+            cleanKlmString = klmInput;
+            return klmInput;
+        }
+        return new String();
     }
 }

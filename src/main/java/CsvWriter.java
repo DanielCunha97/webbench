@@ -17,6 +17,7 @@ public class CsvWriter {
     public void SaveStatistics (ArrayList<OperatorsStatistics> operatorsStatistics){
         try {
             double totaltime = 0.0;
+            // PrintWriter writer = new PrintWriter(new File("/Users/ruipedroduarte/IdeaProjects/webbench/src//main/javascript/files/DataToCharts.csv"));
             PrintWriter writer = new PrintWriter(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/javascript/files/DataToCharts.csv"));
             StringBuilder sb = new StringBuilder();
             sb.append("Operator");

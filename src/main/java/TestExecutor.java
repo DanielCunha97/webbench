@@ -30,7 +30,7 @@ public class TestExecutor {
         this.test= test;
         ChromeOptions options = new ChromeOptions();
         options.addExtensions(new File("D:/Documentos/Mestrado/dissertação/chromeDriver.crx"));
-        //options.addArguments("–load-extension=" + "/Users/ruipedroduarte/Downloads/chromeDriver.crx");
+       // options.addArguments("–load-extension=" + "/Users/ruipedroduarte/Downloads/chromeDriver.crx");
         options.addArguments("--auto-open-devtools-for-tabs");
 
         ChromeOptions caps = new ChromeOptions();
@@ -52,9 +52,6 @@ public class TestExecutor {
             for (int i = 0; i < actions.getLength(); i++) {
 
                 NodeList childNodes = actions.item(i).getChildNodes();
-                //System.out.println("Node 1: " +childNodes.item(1).getTextContent());
-               // System.out.println("Node 3: " +childNodes.item(3).getTextContent());
-               // System.out.println("Node 5: " +childNodes.item(5).getTextContent());
                 executeCommand(
                         childNodes.item(1).getTextContent(),
                         childNodes.item(3).getTextContent(),
@@ -65,12 +62,12 @@ public class TestExecutor {
 
         System.out.println("Total time: " +logger.calculateTotalTime());
         System.out.println("Complete KLM Input result: " +logger.getCompleteKLMInput());
-        logger.calculateTotalOperators(logger.getCompleteKLMInput(), KLMModel.instance().getOperatorsTimes());
+        logger.calculateTotalOperators(logger.cleanKlmString, KLMModel.instance().getOperatorsTimes());
 
 
         if (logger.getOperatorsCount().size() > 0 ) {
             // save these values in a csv file
-            csvWriter.SaveKLMString(logger.getCompleteKLMInput());
+            csvWriter.SaveKLMString(logger.cleanKlmString);
             csvWriter.SaveStatistics(logger.getOperatorsCount());
 
             // go through the array and return the operators with their percentage
@@ -216,7 +213,8 @@ public class TestExecutor {
                 System.out.println("Xpath Name: " +keyValue[1]);
                 element = driver.findElement(By.xpath(keyValue[1]));
             }
-            else if (target.contains("div") || target.contains("form") || target.contains("span") || target.contains("href"))
+            else if (target.contains("//"))
+                //if (target.contains("div") || target.contains("form") || target.contains("span") || target.contains("href"))
             {
                 System.out.println("Menu Name: " +target);
                 element = driver.findElement(By.xpath(target));
@@ -232,7 +230,8 @@ public class TestExecutor {
         }
         else //target does not contain "=", then extract from path
         {
-            if (target.contains("div") || target.contains("form") || target.contains("span") || target.contains("href"))
+           // if (target.contains("div") || target.contains("form") || target.contains("span") || target.contains("href"))
+            if (target.contains("//"))
             {
                 System.out.println("Menu Name 2: " +target);
                 element = driver.findElement(By.xpath(target));

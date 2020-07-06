@@ -15,7 +15,7 @@ public class KLMModel {
     private void fillTimeMap() {
         this.timeMap.put('K', 0.3f);
         this.timeMap.put('P', 1.1f);
-        this.timeMap.put('B', 0.1f);
+        this.timeMap.put('B', 0.2f); //alterado... em vez de colocar dois BB = 0.1, apenas B = 0.2
         this.timeMap.put('H', 0.4f);
         this.timeMap.put('M', 1.35f);
         this.timeMap.put('W', wOperatorTime);  // the value is dynamic because depends from performance of network..
@@ -31,6 +31,7 @@ public class KLMModel {
         return model;
     }
 
+    /* OLDER METHOD WITH Ms
     public String getKLMInput(String action, String typedValue){
         String klmInput = null;
         switch(action){
@@ -54,6 +55,38 @@ public class KLMModel {
                 break;
             case "select":
                 klmInput = "MHPK";
+                break;
+            default:
+                throw new AssertionError(action + "is and invalid action");
+        }
+
+        return klmInput;
+    }
+    */
+    //New KLM method without Ms inserted in the action. Generates an unfinished KLMstring
+    public String getKLMInput(String action, String typedValue){
+        String klmInput = null;
+        switch(action){
+            case "open": //terá de ser introduzido o valor do operador W
+                klmInput = "MH" + typedValue.replaceAll(".","K");
+                break;
+            case "type": //Key
+                klmInput =  typedValue.replaceAll(".","K");
+                break;
+            case "click":
+                klmInput = "HPB";
+                break;
+            case "submit":
+                klmInput = "HPB";
+                break;
+            case "close":
+                klmInput = "HPB";
+                break;
+            case "mouseOver":
+                klmInput = "K";
+                break;
+            case "select":
+                klmInput = "HPK";
                 break;
             default:
                 throw new AssertionError(action + "is and invalid action");
