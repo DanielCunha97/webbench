@@ -94,9 +94,28 @@ public class TestLogger {
             while(!klmInput.replaceFirst("PBHPB", "PBPB").equals(klmInput)){
                 klmInput = klmInput.replaceFirst("PBHPB","PBPB");
             }
-            cleanKlmString = klmInput;
-            return klmInput;
+            cleanKlmString = addMOperator(klmInput);;
+            return cleanKlmString;
         }
         return new String();
+    }
+
+    // Add M operator through some Rules
+    private String addMOperator (String klmInput){
+        int[] iterator = new int[]{0};
+        StringBuilder sb = new StringBuilder(klmInput);
+        for (int i= 0; i < klmInput.length(); i++){
+            if(klmInput.charAt(i) == 'K'){
+                for(int j = i + 1; j > i; j++ ){
+                    if(klmInput.charAt(i) != klmInput.charAt(j)){
+                        //increment 'i' position in new String when we add a new M on klmString
+                        sb.insert(i + iterator[0], 'M');
+                        iterator[0]++;
+                        i = j + 1;
+                    }
+                }
+            }
+        }
+        return sb.toString();
     }
 }
