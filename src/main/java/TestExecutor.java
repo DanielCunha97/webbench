@@ -57,6 +57,14 @@ public class TestExecutor {
                         childNodes.item(3).getTextContent(),
                         childNodes.item(5).getTextContent()
                 );
+                if(childNodes.item(1).getTextContent().equals("type")){
+                    NodeList childNodesTabCheck = actions.item(i-1).getChildNodes();
+                    if(!childNodesTabCheck.item(1).getTextContent().equals("click")){
+                        System.out.println("Used Tab Key!!" + childNodesTabCheck.item(1).getTextContent());
+                    }
+                }
+
+
             }
         }catch(Exception e){ e.printStackTrace(); }
 
