@@ -71,6 +71,7 @@ public class KLMModel {
                 klmInput = "MH" + typedValue.replaceAll(".","K");
                 break;
             case "type": //Key
+                System.out.println("Typed Characters: " + typedValue);
                 klmInput =  typedValue.replaceAll(".","K");
                 break;
             case "click":

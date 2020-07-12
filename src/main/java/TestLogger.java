@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TestLogger {
+    StringBuilder sb = new StringBuilder();
     public String cleanKlmString= new String("");
     private ArrayList<LogWebItem> log = new ArrayList<LogWebItem>();
     private ArrayList<OperatorsStatistics> operatorsCount = new ArrayList<OperatorsStatistics>();
@@ -94,16 +95,16 @@ public class TestLogger {
             while(!klmInput.replaceFirst("PBHPB", "PBPB").equals(klmInput)){
                 klmInput = klmInput.replaceFirst("PBHPB","PBPB");
             }
-            cleanKlmString = addMOperator(klmInput);;
+            cleanKlmString = handleMOperator(klmInput);;
             return cleanKlmString;
         }
         return new String();
     }
 
-    // Add M operator through some Rules
-    private String addMOperator (String klmInput){
+    // Add M operator before K's sequence
+    private String handleMOperator (String klmInput){
         int[] iterator = new int[]{0};
-        StringBuilder sb = new StringBuilder(klmInput);
+        sb = new StringBuilder(klmInput);
         for (int i= 0; i < klmInput.length(); i++){
             if(klmInput.charAt(i) == 'K'){
                 for(int j = i + 1; j > i; j++ ){
@@ -116,6 +117,39 @@ public class TestLogger {
                 }
             }
         }
+        addMOperatorBeforeP(sb.toString());
+        removeMOperator();
         return sb.toString();
+    }
+
+    private void removeMOperator() {
+        String klmSequence = sb.toString();
+        while(!klmSequence.replaceFirst("PMB", "PB").equals(klmSequence)){
+            klmSequence = klmSequence.replaceFirst("PMB","PB");
+        }
+        while(!klmSequence.replaceFirst("PMK", "PK").equals(klmSequence)){
+            klmSequence = klmSequence.replaceFirst("PMK","PK");
+        }
+        while(!klmSequence.replaceFirst("HMB", "HB").equals(klmSequence)){
+            klmSequence = klmSequence.replaceFirst("HMB","HB");
+        }
+
+        // Removing M's that are command terminators
+       /* for(){
+
+        }*/
+
+        sb = new StringBuilder(klmSequence);
+    }
+
+    private void addMOperatorBeforeP(String klmString) {
+        int[] iterator = new int[]{0};
+        sb = new StringBuilder(klmString);
+        for (int i = 0; i< klmString.length(); i++){
+            if(klmString.charAt(i) == 'P'){
+                sb.insert(i +  iterator[0], 'M');
+                iterator[0]++;
+            }
+        }
     }
 }
