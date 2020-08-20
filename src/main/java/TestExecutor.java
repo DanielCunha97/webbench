@@ -232,6 +232,11 @@ public class TestExecutor {
                 System.out.println("Link Name: " +keyValue[1]);
                 element = driver.findElement(By.linkText(keyValue[1]));
             }
+            else if (keyValue[0].equals("css"))
+            {
+                System.out.println("Css button Name: " +keyValue[1]);
+                element = driver.findElement(By.cssSelector(keyValue[1]));
+            }
             else
                 throw new AssertionError("target should be id,name,xpath, or link");
 

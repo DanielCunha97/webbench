@@ -1,113 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TestCase>
-	<selenese>
-		<command>open</command>
-		<target><![CDATA[https://designrevision.com/demo/shards-dashboard-lite/index.html]]></target>
-		<value><![CDATA[]]></value>
-	</selenese>
-	<selenese>
-		<command>click</command>
-		<target><![CDATA[//li[6]/a/span]]></target>
-		<value><![CDATA[]]></value>
-	</selenese>
-	<selenese>
-		<command>click</command>
-		<target><![CDATA[id=feFirstName]]></target>
-		<value><![CDATA[]]></value>
-	</selenese>
-	<selenese>
-		<command>type</command>
-		<target><![CDATA[id=feFirstName]]></target>
-		<value><![CDATA[SieRui rra]]></value>
-	</selenese>
-	<selenese>
-		<command>click</command>
-		<target><![CDATA[id=feLastName]]></target>
-		<value><![CDATA[]]></value>
-	</selenese>
-	<selenese>
-		<command>type</command>
-		<target><![CDATA[id=feLastName]]></target>
-		<value><![CDATA[BrooksPedro]]></value>
-	</selenese>
-	<selenese>
-		<command>click</command>
-		<target><![CDATA[id=feEmailAddress]]></target>
-		<value><![CDATA[]]></value>
-	</selenese>
-	<selenese>
-		<command>click</command>
-		<target><![CDATA[id=feEmailAddress]]></target>
-		<value><![CDATA[]]></value>
-	</selenese>
-	<selenese>
-		<command>doubleClick</command>
-		<target><![CDATA[id=feEmailAddress]]></target>
-		<value><![CDATA[]]></value>
-	</selenese>
-	<selenese>
-		<command>click</command>
-		<target><![CDATA[id=feEmailAddress]]></target>
-		<value><![CDATA[]]></value>
-	</selenese>
-	<selenese>
-		<command>type</command>
-		<target><![CDATA[id=feEmailAddress]]></target>
-		<value><![CDATA[asdasd@asdasdsfa]]></value>
-	</selenese>
-	<selenese>
-		<command>click</command>
-		<target><![CDATA[id=fePassword]]></target>
-		<value><![CDATA[]]></value>
-	</selenese>
-	<selenese>
-		<command>type</command>
-		<target><![CDATA[id=fePassword]]></target>
-		<value><![CDATA[asdasdasda]]></value>
-	</selenese>
-	<selenese>
-		<command>click</command>
-		<target><![CDATA[id=feInputAddress]]></target>
-		<value><![CDATA[]]></value>
-	</selenese>
-	<selenese>
-		<command>type</command>
-		<target><![CDATA[id=feInputAddress]]></target>
-		<value><![CDATA[sdasdagdasdasd fasf]]></value>
-	</selenese>
-	<selenese>
-		<command>click</command>
-		<target><![CDATA[id=feInputCity]]></target>
-		<value><![CDATA[]]></value>
-	</selenese>
-	<selenese>
-		<command>type</command>
-		<target><![CDATA[id=feInputCity]]></target>
-		<value><![CDATA[VIseu]]></value>
-	</selenese>
-	<selenese>
-		<command>click</command>
-		<target><![CDATA[id=feInputState]]></target>
-		<value><![CDATA[]]></value>
-	</selenese>
-	<selenese>
-		<command>select</command>
-		<target><![CDATA[id=feInputState]]></target>
-		<value><![CDATA[label=...]]></value>
-	</selenese>
-	<selenese>
-		<command>click</command>
-		<target><![CDATA[id=inputZip]]></target>
-		<value><![CDATA[]]></value>
-	</selenese>
-	<selenese>
-		<command>type</command>
-		<target><![CDATA[id=inputZip]]></target>
-		<value><![CDATA[3500]]></value>
-	</selenese>
-	<selenese>
-		<command>click</command>
-		<target><![CDATA[//button[@type='submit']]]></target>
-		<value><![CDATA[]]></value>
-	</selenese>
+<selenese>
+	<command>open</command>
+	<target><![CDATA[https://edition.cnn.com/account/register]]></target>
+	<value><![CDATA[]]></value>
+</selenese>
+<selenese>
+	<command>click</command>
+	<target><![CDATA[name=registrationEmail]]></target>
+	<value><![CDATA[]]></value>
+</selenese>
+<selenese>
+	<command>type</command>
+	<target><![CDATA[name=registrationEmail]]></target>
+	<value><![CDATA[cunhadaniel3197@gmail.com]]></value>
+</selenese>
+<selenese>
+	<command>click</command>
+	<target><![CDATA[name=registrationPassword]]></target>
+	<value><![CDATA[]]></value>
+</selenese>
+<selenese>
+	<command>type</command>
+	<target><![CDATA[name=registrationPassword]]></target>
+	<value><![CDATA[123456789_aA31]]></value>
+</selenese>
+<selenese>
+	<command>click</command>
+	<target><![CDATA[css=svg.indexes__CheckboxIcon-sc-30af8a-1.bcTmBE.checkbox-open-icon]]></target>
+	<value><![CDATA[]]></value>
+</selenese>
+<selenese>
+	<command>click</command>
+	<target><![CDATA[id=registration-page-content]]></target>
+	<value><![CDATA[]]></value>
+</selenese>
+<selenese>
+	<command>type</command>
+	<target><![CDATA[name=registrationPassword]]></target>
+	<value><![CDATA[12345_Aa@31]]></value>
+</selenese>
+<selenese>
+	<command>click</command>
+	<target><![CDATA[css=svg.indexes__CheckboxIcon-sc-30af8a-1.bcTmBE.checkbox-open-icon]]></target>
+	<value><![CDATA[]]></value>
+</selenese>
+<selenese>
+	<command>click</command>
+	<target><![CDATA[//button[@id='registration-button']/span]]></target>
+	<value><![CDATA[]]></value>
+</selenese>
 </TestCase>
