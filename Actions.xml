@@ -2,52 +2,32 @@
 <TestCase>
 <selenese>
 	<command>open</command>
-	<target><![CDATA[https://edition.cnn.com/account/register]]></target>
+	<target><![CDATA[https://github.com/login]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[name=registrationEmail]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>type</command>
-	<target><![CDATA[name=registrationEmail]]></target>
-	<value><![CDATA[cunhadaniel3197@gmail.com]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[name=registrationPassword]]></target>
+	<target><![CDATA[id=login_field]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>type</command>
-	<target><![CDATA[name=registrationPassword]]></target>
-	<value><![CDATA[123456789_aA31]]></value>
+	<target><![CDATA[id=login_field]]></target>
+	<value><![CDATA[danicunha97@gmail.com]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[css=svg.indexes__CheckboxIcon-sc-30af8a-1.bcTmBE.checkbox-open-icon]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[id=registration-page-content]]></target>
+	<target><![CDATA[id=password]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>type</command>
-	<target><![CDATA[name=registrationPassword]]></target>
-	<value><![CDATA[12345_Aa@31]]></value>
+	<target><![CDATA[id=password]]></target>
+	<value><![CDATA[sporting312497]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[css=svg.indexes__CheckboxIcon-sc-30af8a-1.bcTmBE.checkbox-open-icon]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[//button[@id='registration-button']/span]]></target>
+	<target><![CDATA[name=commit]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 </TestCase>
