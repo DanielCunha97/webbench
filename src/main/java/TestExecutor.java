@@ -102,7 +102,12 @@ public class TestExecutor {
                 System.out.println("Opening page " + target);
                 driver.get(target);
                 break;
+            case "doubleClick":
             case "click":
+                if(target.contains("CAPTCHA")){
+                    break;
+                }
+
                 element = findElement(target);
 
                 distance = calculateDistanceFromLastPoint(element);
@@ -175,6 +180,18 @@ public class TestExecutor {
 
                 new Select(element).selectByVisibleText(value.split("=",2)[1]);
                 break;
+            case "selectFrame":
+                if(target.contains("relative")){
+                    break;
+                }
+                element = findElement(target);
+
+                distance = calculateDistanceFromLastPoint(element);
+                size = element.getSize().getWidth()*element.getSize().getHeight();
+                logger.addItem(new LogWebItem(element.getLocation().getX(),element.getLocation().getY(), size, KLMModel.instance().getPredictedTime("select", distance, size),
+                        KLMModel.instance().getKLMInput("select",null) ));
+                element.click();
+                break;
         }
     }
 
@@ -236,6 +253,11 @@ public class TestExecutor {
             {
                 System.out.println("Css button Name: " +keyValue[1]);
                 element = driver.findElement(By.cssSelector(keyValue[1]));
+            }
+            else if (keyValue[0].equals("index"))
+            {
+                System.out.println("index Captcha id: " +keyValue[1]);
+                element = driver.findElements(By.tagName("iframe")).get(Integer.parseInt(keyValue[1]));
             }
             else
                 throw new AssertionError("target should be id,name,xpath, or link");
