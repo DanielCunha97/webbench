@@ -2,32 +2,67 @@
 <TestCase>
 <selenese>
 	<command>open</command>
-	<target><![CDATA[https://github.com/login]]></target>
+	<target><![CDATA[https://www.reddit.com/register/?dest=https%3A%2F%2Fwww.reddit.com%2F]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[id=login_field]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>type</command>
-	<target><![CDATA[id=login_field]]></target>
-	<value><![CDATA[danicunha97@gmail.com]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[id=password]]></target>
+	<target><![CDATA[id=regEmail]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>type</command>
-	<target><![CDATA[id=password]]></target>
-	<value><![CDATA[sporting312497]]></value>
+	<target><![CDATA[id=regEmail]]></target>
+	<value><![CDATA[cunhadaniel3197@gmail.com]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[name=commit]]></target>
+	<target><![CDATA[//button[@type='submit']]]></target>
+	<value><![CDATA[]]></value>
+</selenese>
+<selenese>
+	<command>click</command>
+	<target><![CDATA[id=regUsername]]></target>
+	<value><![CDATA[]]></value>
+</selenese>
+<selenese>
+	<command>type</command>
+	<target><![CDATA[id=regUsername]]></target>
+	<value><![CDATA[DanielKLMTest]]></value>
+</selenese>
+<selenese>
+	<command>click</command>
+	<target><![CDATA[//div[@id='default-register']/div[2]/div]]></target>
+	<value><![CDATA[]]></value>
+</selenese>
+<selenese>
+	<command>click</command>
+	<target><![CDATA[id=regPassword]]></target>
+	<value><![CDATA[]]></value>
+</selenese>
+<selenese>
+	<command>type</command>
+	<target><![CDATA[id=regPassword]]></target>
+	<value><![CDATA[123456_aA@31]]></value>
+</selenese>
+<selenese>
+	<command>selectFrame</command>
+	<target><![CDATA[index=1]]></target>
+	<value><![CDATA[]]></value>
+</selenese>
+<selenese>
+	<command>click</command>
+	<target><![CDATA[//span[@id='recaptcha-anchor']/div]]></target>
+	<value><![CDATA[]]></value>
+</selenese>
+<selenese>
+	<command>selectFrame</command>
+	<target><![CDATA[relative=parent]]></target>
+	<value><![CDATA[]]></value>
+</selenese>
+<selenese>
+	<command>click</command>
+	<target><![CDATA[xpath=(//button[@type='submit'])[3]]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 </TestCase>
