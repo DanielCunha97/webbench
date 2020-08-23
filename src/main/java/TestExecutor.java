@@ -104,7 +104,7 @@ public class TestExecutor {
                 break;
             case "doubleClick":
             case "click":
-                if(target.contains("CAPTCHA")){
+                if(target.contains("CAPTCHA") || target.contains("captcha")){
                     break;
                 }
 
@@ -115,7 +115,9 @@ public class TestExecutor {
 
                 logger.addItem(new LogWebItem(element.getLocation().getX(),element.getLocation().getY(), size, KLMModel.instance().getPredictedTime("click",distance,size),
                         KLMModel.instance().getKLMInput("click",null)));
-                element.click();
+                Actions actions = new Actions(driver);
+                actions.moveToElement(element).click().perform();
+                // element.click();
                 break;
             case "type":
                 element = findElement(target);
@@ -144,7 +146,6 @@ public class TestExecutor {
                 logger.addItem(new LogWebItem(element.getLocation().getX(),element.getLocation().getY(), size, KLMModel.instance().getPredictedTime("submit", distance, size),
                         KLMModel.instance().getKLMInput("submit",null)));
                 element.click();
-
                 break;
             case "close":
                /* element = findElement(target);
@@ -181,7 +182,7 @@ public class TestExecutor {
                 new Select(element).selectByVisibleText(value.split("=",2)[1]);
                 break;
             case "selectFrame":
-                if(target.contains("relative")){
+               /* if(target.contains("relative")){
                     break;
                 }
                 element = findElement(target);
@@ -190,7 +191,7 @@ public class TestExecutor {
                 size = element.getSize().getWidth()*element.getSize().getHeight();
                 logger.addItem(new LogWebItem(element.getLocation().getX(),element.getLocation().getY(), size, KLMModel.instance().getPredictedTime("select", distance, size),
                         KLMModel.instance().getKLMInput("select",null) ));
-                element.click();
+                element.click();*/
                 break;
         }
     }
@@ -221,6 +222,8 @@ public class TestExecutor {
             {
                 System.out.println(" Id: " +keyValue[1]);
                 KeyForSplit = keyValue[1].split("]",2);
+                WebDriverWait wait = new WebDriverWait(driver, 15);
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(KeyForSplit[0])));
                 element = driver.findElement(By.id(KeyForSplit[0]));
             }
             else if (keyValue[0].equals("name"))
@@ -231,6 +234,9 @@ public class TestExecutor {
             else if (keyValue[0].contains("button"))
             {
                 System.out.println(" Button: " +keyValue[1]);
+                System.out.println(" Button target: " + target);
+                WebDriverWait wait = new WebDriverWait(driver, 15);
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(target)));
                 element = driver.findElement(By.xpath(target));
             }
             else if (keyValue[0].equals("xpath"))
@@ -274,6 +280,8 @@ public class TestExecutor {
             else if (target.contains("button"))
             {
                 System.out.println(" Button: " +target);
+                WebDriverWait wait = new WebDriverWait(driver, 15);
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(target)));
                 element = driver.findElement(By.xpath(target));
             }
         }
