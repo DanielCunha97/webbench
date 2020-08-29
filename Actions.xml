@@ -2,18 +2,18 @@
 <TestCase>
 <selenese>
 	<command>open</command>
-	<target><![CDATA[https://www.reddit.com/register/?dest=https%3A%2F%2Fwww.reddit.com%2F]]></target>
+	<target><![CDATA[https://www.ikea.com/pt/pt/]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[id=regEmail]]></target>
+	<target><![CDATA[//form[@action='https://www.ikea.com/pt/pt/search/']]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>type</command>
-	<target><![CDATA[id=regEmail]]></target>
-	<value><![CDATA[cunhadaniel3197@gmail.com]]></value>
+	<target><![CDATA[name=q]]></target>
+	<value><![CDATA[mesas jardim]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
@@ -22,47 +22,22 @@
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[id=regUsername]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>type</command>
-	<target><![CDATA[id=regUsername]]></target>
-	<value><![CDATA[DanielKLMTest]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[//div[@id='default-register']/div[2]/div]]></target>
+	<target><![CDATA[//div[@id='search-results']/div[22]/div/a/div/div/div/div[2]/span]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[id=regPassword]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>type</command>
-	<target><![CDATA[id=regPassword]]></target>
-	<value><![CDATA[123456_aA@31]]></value>
-</selenese>
-<selenese>
-	<command>selectFrame</command>
-	<target><![CDATA[index=1]]></target>
+	<target><![CDATA[//div[@id='rec-carousel__unknown-id']/div[4]/div/div/div/a/div/div/div/div]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[//span[@id='recaptcha-anchor']/div]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>selectFrame</command>
-	<target><![CDATA[relative=parent]]></target>
+	<target><![CDATA[//main[@id='content']/div/div/div/div[2]/div[3]/div/div[3]/div/button/span/span/span]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[xpath=(//button[@type='submit'])[3]]]></target>
+	<target><![CDATA[link=Ir para o carrinho]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 </TestCase>

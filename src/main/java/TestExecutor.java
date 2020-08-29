@@ -253,7 +253,7 @@ public class TestExecutor {
             else if (keyValue[0].equals("link"))
             {
                 System.out.println("Link Name: " +keyValue[1]);
-                element = driver.findElement(By.linkText(keyValue[1]));
+                element = driver.findElement(By.linkText(keyValue[1].contains(":") ? keyValue[1].split(":",2)[1] : keyValue[1]));
             }
             else if (keyValue[0].equals("css"))
             {
