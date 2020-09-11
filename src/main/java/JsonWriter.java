@@ -18,7 +18,9 @@ public class JsonWriter {
             JSONArray node = new JSONArray();
             JSONArray link = new JSONArray();
             for (ResourceNodeModel nodeModel:nodeList) {
-                node.add(nodeModel.firstRsrc);
+                JSONObject arrayObj = new JSONObject();
+                arrayObj.put("firstResource",nodeModel.firstRsrc);
+                node.add(arrayObj);
             }
 
             for (ResourcesTimeModel resourceModel:resourcesTimeModels) {
