@@ -14,6 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
@@ -89,7 +90,7 @@ public class TestExecutor {
     }
 
 
-    private void executeCommand(String command, String target, String value){
+    private void executeCommand(String command, String target, String value) throws InterruptedException {
         String[] keyValue = null;
         WebElement element = null;
         double distance;
@@ -117,6 +118,10 @@ public class TestExecutor {
                         KLMModel.instance().getKLMInput("click",null)));
                 Actions actions = new Actions(driver);
                 actions.moveToElement(element).click().perform();
+              /*  while(!isDisplayed(element)){
+                    Thread.sleep(3000);
+                    System.out.println("Element is not visible yet");
+                }*/
                 // element.click();
                 break;
             case "type":
@@ -145,7 +150,11 @@ public class TestExecutor {
 
                 logger.addItem(new LogWebItem(element.getLocation().getX(),element.getLocation().getY(), size, KLMModel.instance().getPredictedTime("submit", distance, size),
                         KLMModel.instance().getKLMInput("submit",null)));
-                element.click();
+                Actions actionsSubmit = new Actions(driver);
+                actionsSubmit.moveToElement(element).click().perform();
+                driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+
+               // element.click();
                 break;
             case "close":
                /* element = findElement(target);
@@ -196,6 +205,16 @@ public class TestExecutor {
         }
     }
 
+    public static boolean isDisplayed(WebElement element) {
+        try {
+            if(element.isDisplayed())
+                return element.isDisplayed();
+        }catch (NoSuchElementException ex) {
+            return false;
+        }
+        return false;
+    }
+
     private double calculateDistanceFromLastPoint(WebElement element) {
         double lastX = logger.getLastWebItem().getCoordX()!=null?logger.getLastWebItem().getCoordX():0;
         double lastY = logger.getLastWebItem().getCoordY()!=null?logger.getLastWebItem().getCoordY():0;
@@ -222,8 +241,8 @@ public class TestExecutor {
             {
                 System.out.println(" Id: " +keyValue[1]);
                 KeyForSplit = keyValue[1].split("]",2);
-                WebDriverWait wait = new WebDriverWait(driver, 15);
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(KeyForSplit[0])));
+                WebDriverWait wait = new WebDriverWait(driver, 60);
+                wait.until(ExpectedConditions.elementToBeClickable(By.id(KeyForSplit[0])));
                 element = driver.findElement(By.id(KeyForSplit[0]));
             }
             else if (keyValue[0].equals("name"))
@@ -235,7 +254,7 @@ public class TestExecutor {
             {
                 System.out.println(" Button: " +keyValue[1]);
                 System.out.println(" Button target: " + target);
-                WebDriverWait wait = new WebDriverWait(driver, 15);
+                WebDriverWait wait = new WebDriverWait(driver, 60);
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(target)));
                 element = driver.findElement(By.xpath(target));
             }
@@ -248,12 +267,18 @@ public class TestExecutor {
                 //if (target.contains("div") || target.contains("form") || target.contains("span") || target.contains("href"))
             {
                 System.out.println("Menu Name: " +target);
+                WebDriverWait wait = new WebDriverWait(driver, 15);
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(target)));
                 element = driver.findElement(By.xpath(target));
             }
             else if (keyValue[0].equals("link"))
             {
                 System.out.println("Link Name: " +keyValue[1]);
-                element = driver.findElement(By.linkText(keyValue[1].contains(":") ? keyValue[1].split(":",2)[1] : keyValue[1]));
+                WebDriverWait wait = new WebDriverWait(driver, 60);
+                // wait.until(ExpectedConditions.elementToBeClickable(By.linkText(keyValue[1].contains(":") ? keyValue[1].split(":",2)[1] : keyValue[1])));
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText(keyValue[1].contains("exact:") ? keyValue[1].split(":",2)[1] : keyValue[1])));
+
+                element = driver.findElement(By.linkText(keyValue[1].contains("exact:") ? keyValue[1].split(":",2)[1] : keyValue[1]));
             }
             else if (keyValue[0].equals("css"))
             {

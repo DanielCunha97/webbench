@@ -3,14 +3,12 @@ import de.sstoehr.harreader.model.Har;
 import de.sstoehr.harreader.model.HarEntry;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 
 public class HarFileModel {
     private CsvWriter csvWriter = new CsvWriter();
+    private JsonWriter jsonWriter = new JsonWriter();
 
     // with LinkedHashMap we preserve insertion order in Hashmap
     private LinkedHashMap<String, Float> timeMap = new LinkedHashMap<String, Float>();
@@ -26,19 +24,31 @@ public class HarFileModel {
     public void calculateDiffResourcesTimes() {
         LinkedHashMap<String, Float> resourcesTtimes = new LinkedHashMap<String, Float>(timeMap);
         ArrayList<ResourcesTimeModel> diffRsrcTimes = new ArrayList<>();
+        List<ResourceNodeModel> nodeList = new ArrayList<ResourceNodeModel>();
         for (Map.Entry hashMap : resourcesTtimes.entrySet()) {
             timeMap.remove(hashMap.getKey());
             for (Map.Entry pair : timeMap.entrySet()) {
                     ResourcesTimeModel resourcesTimeModel = new ResourcesTimeModel();
+                    ResourceNodeModel resourceNode = new ResourceNodeModel();
                     // first resource
                     resourcesTimeModel.firstRsrc = hashMap.getKey().toString();
                     System.out.println(pair.getKey() + " = " + pair.getValue());
                     resourcesTimeModel.secondRsrc = pair.getKey().toString();
                     resourcesTimeModel.diffResourceTime = Math.abs((float) hashMap.getValue() - (float) pair.getValue());
                     diffRsrcTimes.add(resourcesTimeModel);
+                    // gravar apenas os nodes para o grafo (firstResources)
+                    resourceNode.firstRsrc = hashMap.getKey().toString();
+                    nodeList.add(resourceNode);
                 }
         }
         csvWriter.SaveDiffResourcesTimes(diffRsrcTimes);
+        System.out.println("list of nodes : " + nodeList);
+        Set<ResourceNodeModel> nodesWithoutDuplicates = new LinkedHashSet<ResourceNodeModel>(nodeList);
+        nodeList.clear();
+        nodeList.addAll(nodesWithoutDuplicates);
+        List<ResourceNodeModel> asList = new ArrayList<ResourceNodeModel>(nodeList);
+        System.out.println("list of nodes without duplicates : " + nodeList);
+        jsonWriter.SaveDiffResourcesTimes(asList, diffRsrcTimes);
     }
 
     public void FillResourcesMap() {

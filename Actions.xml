@@ -2,42 +2,62 @@
 <TestCase>
 <selenese>
 	<command>open</command>
-	<target><![CDATA[https://www.ikea.com/pt/pt/]]></target>
+	<target><![CDATA[https://edition.cnn.com/account/register]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[//form[@action='https://www.ikea.com/pt/pt/search/']]]></target>
+	<target><![CDATA[name=registrationEmail]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>type</command>
-	<target><![CDATA[name=q]]></target>
-	<value><![CDATA[mesas jardim]]></value>
+	<target><![CDATA[name=registrationEmail]]></target>
+	<value><![CDATA[dfghjklsdf@gmail.com]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[//button[@type='submit']]]></target>
+	<target><![CDATA[name=registrationPassword]]></target>
+	<value><![CDATA[]]></value>
+</selenese>
+<selenese>
+	<command>type</command>
+	<target><![CDATA[name=registrationPassword]]></target>
+	<value><![CDATA[1234567Test@31]]></value>
+</selenese>
+<selenese>
+	<command>click</command>
+	<target><![CDATA[css=svg.indexes__CheckboxIcon-sc-30af8a-1.bcTmBE.checkbox-open-icon]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[//div[@id='search-results']/div[22]/div/a/div/div/div/div[2]/span]]></target>
+	<target><![CDATA[css=svg.indexes__CheckboxIcon-sc-30af8a-1.bcTmBE.checkbox-open-icon]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[//div[@id='rec-carousel__unknown-id']/div[4]/div/div/div/a/div/div/div/div]]></target>
+	<target><![CDATA[css=svg.indexes__IconContainer-oqeuru-2.jjWGJT.user-fill-icon]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[//main[@id='content']/div/div/div/div[2]/div[3]/div/div[3]/div/button/span/span/span]]></target>
+	<target><![CDATA[css=svg.close-icon]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[link=Ir para o carrinho]]></target>
+	<target><![CDATA[link=Entertainment]]></target>
+	<value><![CDATA[]]></value>
+</selenese>
+<selenese>
+	<command>click</command>
+	<target><![CDATA[link=Stars]]></target>
+	<value><![CDATA[]]></value>
+</selenese>
+<selenese>
+	<command>click</command>
+	<target><![CDATA[//section[@id='celebrities-zone-8']/div[2]/div[2]/div[3]/ul/li/article/div/div[2]/h3/a/span]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 </TestCase>
