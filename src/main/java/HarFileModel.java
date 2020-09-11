@@ -46,9 +46,9 @@ public class HarFileModel {
         Set<ResourceNodeModel> nodesWithoutDuplicates = new LinkedHashSet<ResourceNodeModel>(nodeList);
         nodeList.clear();
         nodeList.addAll(nodesWithoutDuplicates);
-        List<ResourceNodeModel> asList = new ArrayList<ResourceNodeModel>(nodeList);
+
         System.out.println("list of nodes without duplicates : " + nodeList);
-        jsonWriter.SaveDiffResourcesTimes(asList, diffRsrcTimes);
+        jsonWriter.SaveDiffResourcesTimes(nodeList, diffRsrcTimes);
     }
 
     public void FillResourcesMap() {
