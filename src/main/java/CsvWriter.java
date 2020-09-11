@@ -57,7 +57,7 @@ public class CsvWriter {
 
     public void SaveDiffResourcesTimes (ArrayList<ResourcesTimeModel> resourcesTimeModels){
         try {
-            PrintWriter writer = new PrintWriter(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/java/files/ResourcesTimes.csv"));
+            PrintWriter writer = new PrintWriter(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/javascript/files/ResourcesTimes.csv"));
             StringBuilder sb = new StringBuilder();
             sb.append("First Resource");
             sb.append(';');
