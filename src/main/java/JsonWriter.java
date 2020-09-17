@@ -3,7 +3,11 @@ import java.io.FileWriter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -19,15 +23,23 @@ public class JsonWriter {
             JSONArray link = new JSONArray();
             for (ResourceNodeModel nodeModel:nodeList) {
                 JSONObject arrayObj = new JSONObject();
-                arrayObj.put("firstResource",nodeModel.firstRsrc);
+                arrayObj.put("name",nodeModel.firstRsrc);
+                arrayObj.put("id",Integer.parseInt(nodeModel.firstRsrc.split("-")[0]));
+                arrayObj.put("group", 1);
                 node.add(arrayObj);
             }
-
             for (ResourcesTimeModel resourceModel:resourcesTimeModels) {
                 JSONObject arrayObj = new JSONObject();
-                arrayObj.put("firstResource",resourceModel.firstRsrc);
-                arrayObj.put("secondResource",resourceModel.secondRsrc);
-                arrayObj.put("time",resourceModel.diffResourceTime);
+                arrayObj.put("source",Integer.parseInt(resourceModel.firstRsrc.split("-")[0]));
+                arrayObj.put("target",Integer.parseInt(resourceModel.secondRsrc.split("-")[0]));
+                String dt = "2020-01-01";  // Start date
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar c = Calendar.getInstance();
+                c.setTime(sdf.parse(dt));
+                c.add(Calendar.DATE, 10);  // number of days to add
+                dt = sdf.format(c.getTime());  // dt is now the new date
+                arrayObj.put("event_date",dt);
+                arrayObj.put("value",resourceModel.diffResourceTime);
                 link.add(arrayObj);
             }
 
