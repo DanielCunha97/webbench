@@ -30,17 +30,22 @@ public class JsonWriter {
             }
             for (ResourcesTimeModel resourceModel:resourcesTimeModels) {
                 JSONObject arrayObj = new JSONObject();
-                arrayObj.put("source",Integer.parseInt(resourceModel.firstRsrc.split("-")[0]));
-                arrayObj.put("target",Integer.parseInt(resourceModel.secondRsrc.split("-")[0]));
-                String dt = "2020-01-01";  // Start date
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                Calendar c = Calendar.getInstance();
-                c.setTime(sdf.parse(dt));
-                c.add(Calendar.DATE, 10);  // number of days to add
-                dt = sdf.format(c.getTime());  // dt is now the new date
-                arrayObj.put("event_date",dt);
-                arrayObj.put("value",resourceModel.diffResourceTime);
-                link.add(arrayObj);
+                if(resourceModel.diffResourceTime > 0 && resourceModel.diffResourceTime2 > 0){
+                    arrayObj.put("source",Integer.parseInt(resourceModel.firstRsrc.split("-")[0]));
+                    arrayObj.put("target",Integer.parseInt(resourceModel.secondRsrc.split("-")[0]));
+                    String dt = "2020-01-01";  // Start date
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(sdf.parse(dt));
+                    c.add(Calendar.DATE, 10);  // number of days to add
+                    dt = sdf.format(c.getTime());  // dt is now the new date
+                    arrayObj.put("event_date",dt);
+                    arrayObj.put("value",resourceModel.diffResourceTime);
+                    arrayObj.put("value2",resourceModel.diffResourceTime2);
+                    arrayObj.put("median",resourceModel.median);
+                    arrayObj.put("percentile",resourceModel.percentil);
+                    link.add(arrayObj);
+                }
             }
 
             JSONObject obj = new JSONObject();

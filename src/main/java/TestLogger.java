@@ -95,6 +95,9 @@ public class TestLogger {
             while(!klmInput.replaceFirst("PBHPB", "PBPB").equals(klmInput)){
                 klmInput = klmInput.replaceFirst("PBHPB","PBPB");
             }
+            while(!klmInput.replaceFirst("HH", "H").equals(klmInput)){
+                klmInput = klmInput.replaceFirst("HH","H");
+            }
             cleanKlmString = handleMOperator(klmInput);;
             return cleanKlmString;
         }

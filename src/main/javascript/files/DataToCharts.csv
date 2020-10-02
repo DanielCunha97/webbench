@@ -1,6 +1,9 @@
 Operator;Number of Interactions;Percentage;TimePerOperator
-M;1;50.0;1.35
-H;1;50.0;0.4
+M;6;13.64;8.1
+H;2;4.55;0.8
+P;4;9.09;4.4
+B;4;9.09;0.8
+K;28;63.64;8.4
 W;0;0.0;0.0
-1.75
-MH
+22.5
+MHMPBMKKKKKKKKKKKKKKKKKKKKKKKKKKKKHMPBMPBMPB

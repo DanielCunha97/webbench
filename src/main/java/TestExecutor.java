@@ -188,7 +188,10 @@ public class TestExecutor {
                 logger.addItem(new LogWebItem(element.getLocation().getX(),element.getLocation().getY(), size, KLMModel.instance().getPredictedTime("select", distance, size),
                         KLMModel.instance().getKLMInput("select",null) ));
 
-                new Select(element).selectByVisibleText(value.split("=",2)[1]);
+                Actions actions_ = new Actions(driver);
+                actions_.moveToElement(element).click().perform();
+
+               // new Select(element).selectByVisibleText(value.split("=",2)[1]);
                 break;
             case "selectFrame":
                /* if(target.contains("relative")){
@@ -266,9 +269,11 @@ public class TestExecutor {
             else if (target.contains("//"))
                 //if (target.contains("div") || target.contains("form") || target.contains("span") || target.contains("href"))
             {
-                System.out.println("Menu Name: " +target);
+              /*  System.out.println("Menu Name: " +target);
                 WebDriverWait wait = new WebDriverWait(driver, 15);
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(target)));
+                element = driver.findElement(By.xpath(target));*/
+                System.out.println("Menu Name: " +target);
                 element = driver.findElement(By.xpath(target));
             }
             else if (keyValue[0].equals("link"))

@@ -13,17 +13,12 @@
 <selenese>
 	<command>type</command>
 	<target><![CDATA[name=registrationEmail]]></target>
-	<value><![CDATA[dfghjklsdf@gmail.com]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[name=registrationPassword]]></target>
-	<value><![CDATA[]]></value>
+	<value><![CDATA[canila@gmail.com]]></value>
 </selenese>
 <selenese>
 	<command>type</command>
 	<target><![CDATA[name=registrationPassword]]></target>
-	<value><![CDATA[1234567Test@31]]></value>
+	<value><![CDATA[MERDA123*mer]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
@@ -37,27 +32,7 @@
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[css=svg.indexes__IconContainer-oqeuru-2.jjWGJT.user-fill-icon]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[css=svg.close-icon]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[link=Entertainment]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[link=Stars]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[//section[@id='celebrities-zone-8']/div[2]/div[2]/div[3]/ul/li/article/div/div[2]/h3/a/span]]></target>
+	<target><![CDATA[//button[@id='registration-button']/span]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 </TestCase>

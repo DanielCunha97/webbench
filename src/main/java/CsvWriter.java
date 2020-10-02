@@ -64,11 +64,20 @@ public class CsvWriter {
             sb.append("Second Resource");
             sb.append(';');
             sb.append("Time difference between them");
+            sb.append(';');
+            sb.append("Second Time difference between them");
+            sb.append(';');
+            sb.append("Median between them");
+            sb.append(';');
+            sb.append("Percentile 25 between them");
             sb.append('\n');
             resourcesTimeModels.forEach(resource -> {
                 sb.append(resource.firstRsrc + ";");
                 sb.append(resource.secondRsrc + ";");
-                sb.append(resource.diffResourceTime);
+                sb.append(resource.diffResourceTime + ";");
+                sb.append(resource.diffResourceTime2 + ";");
+                sb.append(resource.median + ";");
+                sb.append(resource.percentil);
                 sb.append('\n');
             });
             writer.write(sb.toString());
