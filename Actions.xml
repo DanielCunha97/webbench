@@ -13,12 +13,12 @@
 <selenese>
 	<command>type</command>
 	<target><![CDATA[name=registrationEmail]]></target>
-	<value><![CDATA[canila@gmail.com]]></value>
+	<value><![CDATA[danicunha97@hotmail.com]]></value>
 </selenese>
 <selenese>
 	<command>type</command>
 	<target><![CDATA[name=registrationPassword]]></target>
-	<value><![CDATA[MERDA123*mer]]></value>
+	<value><![CDATA[Dadicunha98@43]]></value>
 </selenese>
 <selenese>
 	<command>click</command>

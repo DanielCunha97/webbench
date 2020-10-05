@@ -24,6 +24,7 @@ public class JsonWriter {
             for (ResourceNodeModel nodeModel:nodeList) {
                 JSONObject arrayObj = new JSONObject();
                 arrayObj.put("name",nodeModel.firstRsrc);
+                arrayObj.put("type",nodeModel.type);
                 arrayObj.put("id",Integer.parseInt(nodeModel.firstRsrc.split("-")[0]));
                 arrayObj.put("group", 1);
                 node.add(arrayObj);
@@ -41,9 +42,10 @@ public class JsonWriter {
                     dt = sdf.format(c.getTime());  // dt is now the new date
                     arrayObj.put("event_date",dt);
                     arrayObj.put("value",resourceModel.diffResourceTime);
-                    arrayObj.put("value2",resourceModel.diffResourceTime2);
+                    arrayObj.put("secondValue",resourceModel.diffResourceTime2);
                     arrayObj.put("median",resourceModel.median);
-                    arrayObj.put("percentile",resourceModel.percentil);
+                    arrayObj.put("percentile 5",resourceModel.percentil_cinco);
+                    arrayObj.put("percentile 95",resourceModel.percentil_noventaCinco);
                     link.add(arrayObj);
                 }
             }

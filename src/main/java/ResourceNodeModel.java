@@ -7,6 +7,8 @@ public class ResourceNodeModel {
 
         public String firstRsrc;
 
+        public String type;
+
         public ResourceNodeModel(){
 
         }

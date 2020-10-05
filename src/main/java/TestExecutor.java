@@ -1,9 +1,12 @@
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
@@ -14,6 +17,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -27,22 +34,28 @@ public class TestExecutor {
     private TestLogger logger = new TestLogger();
     private CsvWriter csvWriter = new CsvWriter();
 
-    public TestExecutor(XMLParser test){
+    public TestExecutor(XMLParser test) throws IOException {
         this.test= test;
+
         ChromeOptions options = new ChromeOptions();
         options.addExtensions(new File("D:/Documentos/Mestrado/dissertação/chromeDriver.crx"));
-       // options.addArguments("–load-extension=" + "/Users/ruipedroduarte/Downloads/chromeDriver.crx");
+        // options.addArguments("–load-extension=" + "/Users/ruipedroduarte/Downloads/chromeDriver.crx");
         options.addArguments("--auto-open-devtools-for-tabs");
 
         ChromeOptions caps = new ChromeOptions();
-        //DesiredCapabilities caps = DesiredCapabilities.chrome();
+        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
         LoggingPreferences logPrefs = new LoggingPreferences();
         logPrefs.enable(LogType.BROWSER, Level.ALL);
+        logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
         caps.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+        capabilities.setCapability("goog:loggingPrefs", logPrefs);
 
+        capabilities.merge(options);
         options.merge(caps);
 
-        driver = new ChromeDriver(options);
+        driver = new ChromeDriver(capabilities);
+       // driver.navigate().to(test.getDocument().getElementsByTagName("selenese").item(0).getChildNodes()
+        //        .item(3).getTextContent());
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
         NodeList actions= test.getDocument().getElementsByTagName("selenese");
@@ -87,8 +100,9 @@ public class TestExecutor {
         }
 
         Util.analyzeLog(driver);
+       // Util.getHAR(driver, "WebSiteHarFile");
+        HarFileModel harFileModel = new HarFileModel();
     }
-
 
     private void executeCommand(String command, String target, String value) throws InterruptedException {
         String[] keyValue = null;

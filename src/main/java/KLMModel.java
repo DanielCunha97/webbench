@@ -1,4 +1,4 @@
-import de.sstoehr.harreader.HarReaderException;
+import harreader.HarReaderException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,7 +6,6 @@ import java.util.HashMap;
 public class KLMModel {
     private HashMap<Character,Float> timeMap = new HashMap<Character,Float>();
     private static KLMModel model = null;
-    HarFileModel harFileModel = new HarFileModel();
 
     private KLMModel()  {
         fillTimeMap();

@@ -1,9 +1,16 @@
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class Util {
     public static void analyzeLog(WebDriver driver) {
@@ -45,5 +52,35 @@ public class Util {
         else {
             return true;
         }
+    }
+
+    private static JSONArray getPerfEntryLogs(WebDriver driver) {
+        LogEntries logEntries = driver.manage().logs().get(LogType.PERFORMANCE);
+        JSONArray perfJsonArray = new JSONArray();
+        logEntries.forEach(entry -> {
+                JSONObject messageJSON = new JSONObject(entry.getMessage()).getJSONObject("message");
+            // System.out.println("Entry JSON: " + messageJSON);
+            // System.out.println("Entry: " + messageJSON.getJSONObject("log").getJSONObject("entries").getJSONObject("request").get("url"));
+                perfJsonArray.put(messageJSON);
+        });
+        return perfJsonArray;
+    }
+
+    public static void getHAR(WebDriver driver, String fileName) throws IOException {
+        String destinationFile = "D:/Programas/XAMPP/htdocs/webbench/src/main/java/files/" + fileName + ".har";
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        ((JavascriptExecutor) driver).executeScript(
+                "!function(e,o){e.src=\"D:/Programas/XAMPP/htdocs/webbench/src/main/javascript/assets/chromePerfLogsHAR.js\"," +
+                        "e.onload=function(){jQuery.noConflict(),console.log(\"jQuery injected\")},document.head.appendChild(e)}(document.createElement(\"script\"));");
+        File file = new File(destinationFile);
+        if(file.exists()){
+            file = new File("D:/Programas/XAMPP/htdocs/webbench/src/main/java/files/WebSiteHarFileSecondRun.har");
+        }
+        file.getParentFile().mkdirs();
+        FileWriter harFile = new FileWriter(file);
+        harFile.write((String) ((JavascriptExecutor) driver).executeAsyncScript(
+                "return module.getHarFromMessages(arguments[0])", getPerfEntryLogs(driver).toString()));
+        harFile.close();
     }
 }
