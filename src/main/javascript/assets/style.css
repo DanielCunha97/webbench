@@ -1,3 +1,39 @@
+div.tooltip {
+    position: absolute;
+    background-color: white;
+    max-width; 200px;
+    height: auto;
+    padding: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    border-width: 1px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, .5);
+    pointer-events: none;
+  }
+
+/*.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  /*position: absolute;
+  z-index: 1;
+}*/
+
 .node {
   fill: #ccc;
   stroke: #333;
@@ -10,37 +46,38 @@
 .all_links {
 			stroke: #999;
 			stroke-opacity: 0.7;
-		}
-		.all_nodes {
-			stroke: #fff;
-			stroke-width: 1.5px;
-		}
-		.domain {
-			display: none;
-			fill: none;
-			stroke: #000;
-			stroke-opacity: .3;
-			stroke-width: 10px;
-			stroke-linecap: round;
-		}
-		.halo {
-			fill: none;
-			stroke: #ddd;
-			stroke-width: 8px;
-			stroke-linecap: round;
-		}
-		.tick {
-			font-size: 12px;
-		}
-		.selecting circle {
-			fill-opacity: .2;
-		}
-		.selecting circle.selected {
-			stroke: #f00;
-		}
-		.handle {
-			fill: #fff;
-			stroke: #000;
-			stroke-opacity: .5;
-			stroke-width: 1.25px;
-			cursor: pointer;
+}
+.all_nodes {
+	stroke: #fff;
+	stroke-width: 1.5px;
+}
+.domain {
+	display: none;
+	fill: none;
+	stroke: #000;
+	stroke-opacity: .3;
+	stroke-width: 10px;
+	stroke-linecap: round;
+}
+.halo {
+	fill: none;
+	stroke: #ddd;
+	stroke-width: 8px;
+	stroke-linecap: round;
+}
+.tick {
+	font-size: 12px;
+}
+.selecting circle {
+	fill-opacity: .2;
+}
+.selecting circle.selected {
+	stroke: #f00;
+}
+.handle {
+	fill: #fff;
+	stroke: #000;
+	stroke-opacity: .5;
+	stroke-width: 1.25px;
+	cursor: pointer;
+}

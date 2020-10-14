@@ -2,37 +2,67 @@
 <TestCase>
 <selenese>
 	<command>open</command>
-	<target><![CDATA[https://edition.cnn.com/account/register]]></target>
+	<target><![CDATA[https://www.lionofporches.com/checkout/v1/?id=2]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[name=registrationEmail]]></target>
+	<target><![CDATA[xpath=(//input[@name='email'])[2]]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>type</command>
-	<target><![CDATA[name=registrationEmail]]></target>
-	<value><![CDATA[danicunha97@hotmail.com]]></value>
+	<target><![CDATA[xpath=(//input[@name='email'])[2]]]></target>
+	<value><![CDATA[cunhadanier3@gmail.com]]></value>
+</selenese>
+<selenese>
+	<command>click</command>
+	<target><![CDATA[//input[@value='Continuar']]]></target>
+	<value><![CDATA[]]></value>
+</selenese>
+<selenese>
+	<command>click</command>
+	<target><![CDATA[id=user_name]]></target>
+	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>type</command>
-	<target><![CDATA[name=registrationPassword]]></target>
-	<value><![CDATA[Dadicunha98@43]]></value>
+	<target><![CDATA[id=user_name]]></target>
+	<value><![CDATA[Danielg]]></value>
+</selenese>
+<selenese>
+	<command>type</command>
+	<target><![CDATA[id=morada1]]></target>
+	<value><![CDATA[rua dabvd]]></value>
+</selenese>
+<selenese>
+	<command>type</command>
+	<target><![CDATA[id=morada2]]></target>
+	<value><![CDATA[abraves]]></value>
+</selenese>
+<selenese>
+	<command>type</command>
+	<target><![CDATA[name=cp]]></target>
+	<value><![CDATA[3456-234]]></value>
+</selenese>
+<selenese>
+	<command>type</command>
+	<target><![CDATA[name=cidade]]></target>
+	<value><![CDATA[Viseub]]></value>
+</selenese>
+<selenese>
+	<command>type</command>
+	<target><![CDATA[xpath=(//input[@name='password'])[2]]]></target>
+	<value><![CDATA[Sporting31@2]]></value>
+</selenese>
+<selenese>
+	<command>type</command>
+	<target><![CDATA[name=rpassword]]></target>
+	<value><![CDATA[Sporting31@2]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[css=svg.indexes__CheckboxIcon-sc-30af8a-1.bcTmBE.checkbox-open-icon]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[css=svg.indexes__CheckboxIcon-sc-30af8a-1.bcTmBE.checkbox-open-icon]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[//button[@id='registration-button']/span]]></target>
+	<target><![CDATA[//input[@value='Finalizar']]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 </TestCase>

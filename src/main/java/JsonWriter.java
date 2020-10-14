@@ -44,8 +44,8 @@ public class JsonWriter {
                     arrayObj.put("value",resourceModel.diffResourceTime);
                     arrayObj.put("secondValue",resourceModel.diffResourceTime2);
                     arrayObj.put("median",resourceModel.median);
-                    arrayObj.put("percentile 5",resourceModel.percentil_cinco);
-                    arrayObj.put("percentile 95",resourceModel.percentil_noventaCinco);
+                    arrayObj.put("percentileFive",resourceModel.percentil_cinco);
+                    arrayObj.put("percentileNinetyFive",resourceModel.percentil_noventaCinco);
                     link.add(arrayObj);
                 }
             }

@@ -14,7 +14,7 @@ public class CsvWriter {
         this.klmResult = klmResult;
     }
 
-    public void SaveStatistics (ArrayList<OperatorsStatistics> operatorsStatistics){
+    public void SaveStatistics (ArrayList<OperatorsStatistics> operatorsStatistics, float wOperator){
         try {
             double totaltime = 0.0;
             // PrintWriter writer = new PrintWriter(new File("/Users/ruipedroduarte/IdeaProjects/webbench/src//main/javascript/files/DataToCharts.csv"));
@@ -41,10 +41,10 @@ public class CsvWriter {
             sb.append("W" + ";");
             sb.append(0 + ";");
             sb.append(0.0 + ";");
-            sb.append(0.0);
+            sb.append((double) Math.round(wOperator*100)/100);
             sb.append('\n');
             //----------------------------------
-            sb.append((double) Math.round(totaltime*100)/100);
+            sb.append((double) Math.round((wOperator + totaltime)*100)/100);
             sb.append('\n');
             sb.append(klmResult);
             writer.write(sb.toString());

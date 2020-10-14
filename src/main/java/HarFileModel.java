@@ -97,12 +97,10 @@ public class HarFileModel {
         }
 
         csvWriter.SaveDiffResourcesTimes(diffRsrcTimes);
-        System.out.println("list of nodes : " + nodeList);
         Set<ResourceNodeModel> nodesWithoutDuplicates = new LinkedHashSet<ResourceNodeModel>(nodeList);
         nodeList.clear();
         nodeList.addAll(nodesWithoutDuplicates);
 
-        System.out.println("list of nodes without duplicates : " + nodeList);
         jsonWriter.SaveDiffResourcesTimes(nodeList, diffRsrcTimes);
     }
 

@@ -1,3 +1,4 @@
+import org.apache.commons.lang3.time.StopWatch;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.openqa.selenium.By;
@@ -36,7 +37,7 @@ public class TestExecutor {
 
     public TestExecutor(XMLParser test) throws IOException {
         this.test= test;
-
+        NodeList actions= test.getDocument().getElementsByTagName("selenese");
         ChromeOptions options = new ChromeOptions();
         options.addExtensions(new File("D:/Documentos/Mestrado/dissertação/chromeDriver.crx"));
         // options.addArguments("–load-extension=" + "/Users/ruipedroduarte/Downloads/chromeDriver.crx");
@@ -50,16 +51,18 @@ public class TestExecutor {
         caps.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
         capabilities.setCapability("goog:loggingPrefs", logPrefs);
 
+
         capabilities.merge(options);
         options.merge(caps);
 
         driver = new ChromeDriver(capabilities);
+        driver.get(actions.item(0).getChildNodes().item(3).getTextContent());
        // driver.navigate().to(test.getDocument().getElementsByTagName("selenese").item(0).getChildNodes()
-        //        .item(3).getTextContent());
+        //       .item(3).getTextContent());
+        StopWatch pageLoad = new StopWatch();
+        pageLoad.start();
+
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-
-        NodeList actions= test.getDocument().getElementsByTagName("selenese");
-
 
         try {
             System.out.println("Actions length: " +actions.getLength());
@@ -82,15 +85,19 @@ public class TestExecutor {
             }
         }catch(Exception e){ e.printStackTrace(); }
 
+        pageLoad.stop();
+        //Get the time
+        float pageLoadTime_Seconds = (float)pageLoad.getTime() / 1000;
+        System.out.println("Total Page Load Time: " + pageLoadTime_Seconds + " seconds");
+
         System.out.println("Total time: " +logger.calculateTotalTime());
         System.out.println("Complete KLM Input result: " +logger.getCompleteKLMInput());
         logger.calculateTotalOperators(logger.cleanKlmString, KLMModel.instance().getOperatorsTimes());
 
-
         if (logger.getOperatorsCount().size() > 0 ) {
             // save these values in a csv file
             csvWriter.SaveKLMString(logger.cleanKlmString);
-            csvWriter.SaveStatistics(logger.getOperatorsCount());
+            csvWriter.SaveStatistics(logger.getOperatorsCount(), pageLoadTime_Seconds);
 
             // go through the array and return the operators with their percentage
             for(int i=0; i <logger.getOperatorsCount().size(); i++) {
@@ -115,7 +122,7 @@ public class TestExecutor {
                 logger.addItem(new LogWebItem(KLMModel.instance().getPredictedTime("open",value,0.0d,0.0d),
                         KLMModel.instance().getKLMInput("open",value)));
                 System.out.println("Opening page " + target);
-                driver.get(target);
+               // driver.get(target);
                 break;
             case "doubleClick":
             case "click":
