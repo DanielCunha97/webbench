@@ -2,8 +2,12 @@ package harreader.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonGenerator;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -117,6 +121,49 @@ public class HarLog {
                 Objects.equals(pages, harLog.pages) &&
                 Objects.equals(entries, harLog.entries) &&
                 Objects.equals(comment, harLog.comment);
+    }
+
+    public void writeHar(JsonGenerator g) throws JsonGenerationException, IOException {
+        g.writeObjectFieldStart("log");
+        g.writeStringField("version", this.version);
+       // this.creator.writeHar(g);
+        if (this.browser != null) {
+            this.browser.writeHar(g);
+        }
+
+        if (this.pages != null) {
+            this.pages.forEach(page -> {
+                try {
+                    page.writeHar(g);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+
+        g.writeArrayFieldStart("entries");
+        Iterator var2 = this.entries.iterator();
+
+        while(var2.hasNext()) {
+            HarEntry entry = (HarEntry)var2.next();
+            entry.writeHar(g);
+        }
+
+        g.writeEndArray();
+
+  /*      this.entries.forEach(entry -> {
+            try {
+                entry.writeHar(g);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });*/
+        if (this.comment != null) {
+            g.writeStringField("comment", this.comment);
+        }
+
+        // this.customFields.writeHar(g);
+        g.writeEndObject();
     }
 
     @Override

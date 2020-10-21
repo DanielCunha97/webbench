@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonGenerator;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Information about an exported page.
@@ -106,6 +106,20 @@ public class HarPage {
                 Objects.equals(pageTimings, harPage.pageTimings) &&
                 Objects.equals(comment, harPage.comment) &&
                 Objects.equals(additional, harPage.additional);
+    }
+
+    public void writeHar(JsonGenerator g) throws JsonGenerationException, IOException {
+        g.writeStartObject();
+        g.writeStringField("startedDateTime", String.valueOf(this.startedDateTime));
+        g.writeStringField("id", this.id);
+        g.writeStringField("title", this.title);
+        this.pageTimings.writeHar(g);
+        if (this.comment != null) {
+            g.writeStringField("comment", this.comment);
+        }
+
+       // this.customFields.writeHar(g);
+        g.writeEndObject();
     }
 
     @Override

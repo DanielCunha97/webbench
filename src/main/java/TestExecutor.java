@@ -1,9 +1,11 @@
+import net.lightbody.bmp.BrowserMobProxy;
+import net.lightbody.bmp.BrowserMobProxyServer;
+import net.lightbody.bmp.client.ClientUtil;
+import net.lightbody.bmp.proxy.CaptureType;
 import org.apache.commons.lang3.time.StopWatch;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
@@ -19,9 +21,8 @@ import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.net.Inet4Address;
+import java.util.*;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -45,19 +46,26 @@ public class TestExecutor {
 
         ChromeOptions caps = new ChromeOptions();
         DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
         LoggingPreferences logPrefs = new LoggingPreferences();
         logPrefs.enable(LogType.BROWSER, Level.ALL);
         logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
+
+        Map<String, Object> perfLogPrefs = new HashMap<String, Object>();
+        perfLogPrefs.put("traceCategories", "browser,devtools.timeline,devtools");
+
         caps.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
         capabilities.setCapability("goog:loggingPrefs", logPrefs);
 
 
-        capabilities.merge(options);
+        //capabilities.merge(options);
         options.merge(caps);
+        options.setExperimentalOption("perfLoggingPrefs", perfLogPrefs);
 
         driver = new ChromeDriver(capabilities);
         driver.get(actions.item(0).getChildNodes().item(3).getTextContent());
-       // driver.navigate().to(test.getDocument().getElementsByTagName("selenese").item(0).getChildNodes()
+
+        // driver.navigate().to(test.getDocument().getElementsByTagName("selenese").item(0).getChildNodes()
         //       .item(3).getTextContent());
         StopWatch pageLoad = new StopWatch();
         pageLoad.start();
@@ -107,8 +115,9 @@ public class TestExecutor {
         }
 
         Util.analyzeLog(driver);
-       // Util.getHAR(driver, "WebSiteHarFile");
-        HarFileModel harFileModel = new HarFileModel();
+        String fileName = driver.getCurrentUrl().split("//",2)[1].split("/")[0].replace(".", "_");
+        Util.getPerfEntryLogs(driver, fileName);
+    //    HarFileModel harFileModel = new HarFileModel();
     }
 
     private void executeCommand(String command, String target, String value) throws InterruptedException {

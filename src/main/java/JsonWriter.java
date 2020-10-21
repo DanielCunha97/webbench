@@ -18,16 +18,15 @@ public class JsonWriter {
 
     public void SaveDiffResourcesTimes (List<ResourceNodeModel> nodeList, ArrayList<ResourcesTimeModel> resourcesTimeModels) {
         try {
-            FileWriter writer = new FileWriter(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/javascript/files/ResourcesTimes.json"));
             JSONArray node = new JSONArray();
             JSONArray link = new JSONArray();
             for (ResourceNodeModel nodeModel:nodeList) {
-                JSONObject arrayObj = new JSONObject();
-                arrayObj.put("name",nodeModel.firstRsrc);
-                arrayObj.put("type",nodeModel.type);
-                arrayObj.put("id",Integer.parseInt(nodeModel.firstRsrc.split("-")[0]));
-                arrayObj.put("group", 1);
-                node.add(arrayObj);
+                    JSONObject arrayObj = new JSONObject();
+                    arrayObj.put("name", nodeModel.firstRsrc);
+                    arrayObj.put("type", nodeModel.type);
+                    arrayObj.put("id", Integer.parseInt(nodeModel.firstRsrc.split("-")[0]));
+                    arrayObj.put("group", 1);
+                    node.add(arrayObj);
             }
             for (ResourcesTimeModel resourceModel:resourcesTimeModels) {
                 JSONObject arrayObj = new JSONObject();
@@ -53,7 +52,7 @@ public class JsonWriter {
             JSONObject obj = new JSONObject();
             obj.put("nodes", node);
             obj.put("links",link);
-
+            FileWriter writer = new FileWriter(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/javascript/files/TwitterResourcesTimes.json"));
             writer.write(obj.toJSONString());
             writer.close();
         } catch (Exception e) {

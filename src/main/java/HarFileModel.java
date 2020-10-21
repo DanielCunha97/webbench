@@ -1,3 +1,4 @@
+import edu.umass.cs.benchlab.har.tools.HarFileWriter;
 import harreader.HarReader;
 import harreader.model.Har;
 
@@ -13,9 +14,10 @@ public class HarFileModel {
     // with LinkedHashMap we preserve insertion order in Hashmap
     private LinkedHashMap<String, ResourceInfo> timeMap = new LinkedHashMap<String, ResourceInfo>();
     private LinkedHashMap<String, ResourceInfo> timeMapSecondRun = new LinkedHashMap<String, ResourceInfo>();
+    private LinkedHashMap<String, ArrayList<ResourceInfo>> timeHarMap = new LinkedHashMap<String, ArrayList<ResourceInfo>>();
 
-    public HarFileModel() {
-        FillResourcesMap();
+    public HarFileModel(String fileName) {
+        FillResourcesMap(fileName);
     }
 
     public LinkedHashMap<String, ResourceInfo> GetTime() {
@@ -110,14 +112,24 @@ public class HarFileModel {
         return latencies.get(index-1);
     }
 
-    public void FillResourcesMap() {
+    public void FillResourcesMap(String fileName) {
         int[] count = new int[]{0};
-        int[] secondCount = new int[]{0};
+        int[] fileCount = new int[]{0};
         ArrayList<String> checkDuplicates = new ArrayList<String>();
         try {
             HarReader harReader = new HarReader();
-            Har har = harReader.readFromFile(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/java/files/twitter.com.user1.har"));
+            File file = new File("D:/Programas/XAMPP/htdocs/webbench/src/main/java/files/" + fileName + "_" + fileCount[0] + ".har");
+            Har harTest = harReader.readFromFile(file);
+            while (file.exists()){
+                fileCount[0]++;
+                file = new File("D:/Programas/XAMPP/htdocs/webbench/src/main/java/files/" + fileName + "_" + fileCount[0] +".har");
+                Har otherHar = harReader.readFromFile(file);
 
+              //  timeHarMap
+            }
+
+
+            Har har = harReader.readFromFile(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/java/files/twitter.com.user1.har"));
             Har secondHar = harReader.readFromFile(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/java/files/twitter.com.user1_secondRUN.har"));
 
             har.getLog().getEntries().forEach(entry -> {

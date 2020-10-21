@@ -2,67 +2,37 @@
 <TestCase>
 <selenese>
 	<command>open</command>
-	<target><![CDATA[https://www.lionofporches.com/checkout/v1/?id=2]]></target>
+	<target><![CDATA[https://edition.cnn.com/account/register]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[xpath=(//input[@name='email'])[2]]]></target>
+	<target><![CDATA[name=registrationEmail]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>type</command>
-	<target><![CDATA[xpath=(//input[@name='email'])[2]]]></target>
-	<value><![CDATA[cunhadanier3@gmail.com]]></value>
+	<target><![CDATA[name=registrationEmail]]></target>
+	<value><![CDATA[diorebelo97@gmail.com]]></value>
+</selenese>
+<selenese>
+	<command>type</command>
+	<target><![CDATA[name=registrationPassword]]></target>
+	<value><![CDATA[Sporting31_34<]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[//input[@value='Continuar']]]></target>
+	<target><![CDATA[//div[@id='registration-page-content']/form/label/span]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[id=user_name]]></target>
+	<target><![CDATA[css=svg.indexes__CheckboxIcon-sc-30af8a-1.bcTmBE.checkbox-open-icon]]></target>
 	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>type</command>
-	<target><![CDATA[id=user_name]]></target>
-	<value><![CDATA[Danielg]]></value>
-</selenese>
-<selenese>
-	<command>type</command>
-	<target><![CDATA[id=morada1]]></target>
-	<value><![CDATA[rua dabvd]]></value>
-</selenese>
-<selenese>
-	<command>type</command>
-	<target><![CDATA[id=morada2]]></target>
-	<value><![CDATA[abraves]]></value>
-</selenese>
-<selenese>
-	<command>type</command>
-	<target><![CDATA[name=cp]]></target>
-	<value><![CDATA[3456-234]]></value>
-</selenese>
-<selenese>
-	<command>type</command>
-	<target><![CDATA[name=cidade]]></target>
-	<value><![CDATA[Viseub]]></value>
-</selenese>
-<selenese>
-	<command>type</command>
-	<target><![CDATA[xpath=(//input[@name='password'])[2]]]></target>
-	<value><![CDATA[Sporting31@2]]></value>
-</selenese>
-<selenese>
-	<command>type</command>
-	<target><![CDATA[name=rpassword]]></target>
-	<value><![CDATA[Sporting31@2]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[//input[@value='Finalizar']]]></target>
+	<target><![CDATA[id=registration-button]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
-</TestCase>
+</TestCase> 

@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonGenerator;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -200,6 +203,39 @@ public class HarEntry {
                 Objects.equals(connection, harEntry.connection) &&
                 Objects.equals(comment, harEntry.comment) &&
                 Objects.equals(additional, harEntry.additional);
+    }
+
+    public void writeHar(JsonGenerator g) throws JsonGenerationException, IOException {
+        g.writeStartObject();
+        if (this.pageref != null) {
+            g.writeStringField("pageref", this.pageref);
+        }
+
+       // g.writeStringField("startedDateTime", String.valueOf(this.startedDateTime));
+        g.writeNumberField("time", this.time);
+        g.writeStringField("_resourceType", this._resourceType);
+        g.writeStringField("_priority", this._priority);
+        this.request.writeHar(g);
+       // this.response.writeHar(g);
+       /* if (this.cache != null) {
+            this.cache.writeHar(g);
+        }*/
+
+       // this.timings.writeHar(g);
+        if (this.serverIPAddress != null) {
+            g.writeStringField("serverIPAddress", this.serverIPAddress);
+        }
+
+        if (this.connection != null) {
+            g.writeStringField("connection", this.connection);
+        }
+
+        if (this.comment != null) {
+            g.writeStringField("comment", this.comment);
+        }
+
+        // this.customFields.writeHar(g);
+        g.writeEndObject();
     }
 
     @Override

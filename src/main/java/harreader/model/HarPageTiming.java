@@ -2,7 +2,10 @@ package harreader.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonGenerator;
 
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -58,6 +61,24 @@ public class HarPageTiming {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public void writeHar(JsonGenerator g) throws JsonGenerationException, IOException {
+        g.writeObjectFieldStart("pageTimings");
+        if (this.onContentLoad != null) {
+            g.writeNumberField("onContentLoad", this.onContentLoad);
+        }
+
+        if (this.onLoad != null) {
+            g.writeNumberField("onLoad", this.onLoad);
+        }
+
+        if (this.comment != null) {
+            g.writeStringField("comment", this.comment);
+        }
+
+       // this.customFields.writeHar(g);
+        g.writeEndObject();
     }
 
     @Override
