@@ -14,11 +14,11 @@ public class CsvWriter {
         this.klmResult = klmResult;
     }
 
-    public void SaveStatistics (ArrayList<OperatorsStatistics> operatorsStatistics, float wOperator){
+    public void SaveStatistics (ArrayList<OperatorsStatistics> operatorsStatistics, float wOperator, String fileName){
         try {
             double totaltime = 0.0;
             // PrintWriter writer = new PrintWriter(new File("/Users/ruipedroduarte/IdeaProjects/webbench/src//main/javascript/files/DataToCharts.csv"));
-            PrintWriter writer = new PrintWriter(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/javascript/files/DataToCharts.csv"));
+            PrintWriter writer = new PrintWriter(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/javascript/files/" + fileName + "DataToCharts.csv"));
             StringBuilder sb = new StringBuilder();
             sb.append("Operator");
             sb.append(';');
@@ -55,9 +55,9 @@ public class CsvWriter {
         }
     }
 
-    public void SaveDiffResourcesTimes (ArrayList<ResourcesTimeModel> resourcesTimeModels){
+    public void SaveDiffResourcesTimes (ArrayList<ResourcesTimeModel> resourcesTimeModels, String fileName){
         try {
-            PrintWriter writer = new PrintWriter(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/javascript/files/ResourcesTimes.csv"));
+            PrintWriter writer = new PrintWriter(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/javascript/files/" + fileName + "ResourcesTimes.csv"));
             StringBuilder sb = new StringBuilder();
             sb.append("First Resource");
             sb.append(';');
@@ -65,10 +65,10 @@ public class CsvWriter {
             sb.append(';');
             sb.append("Resource type");
             sb.append(';');
-            sb.append("Time difference between them");
-            sb.append(';');
-            sb.append("Second Time difference between them");
-            sb.append(';');
+           // sb.append("Time difference between them");
+           // sb.append(';');
+           // sb.append("Second Time difference between them");
+           // sb.append(';');
             sb.append("Median between them");
             sb.append(';');
             sb.append("Percentile 5 between them");
@@ -79,8 +79,8 @@ public class CsvWriter {
                 sb.append(resource.firstRsrc + ";");
                 sb.append(resource.secondRsrc + ";");
                 sb.append(resource.resourceType + ";");
-                sb.append(resource.diffResourceTime + ";");
-                sb.append(resource.diffResourceTime2 + ";");
+                // sb.append(resource.diffResourceTime + ";");
+                // sb.append(resource.diffResourceTime2 + ";");
                 sb.append(resource.median + ";");
                 sb.append(resource.percentil_cinco + ";");
                 sb.append(resource.percentil_noventaCinco);

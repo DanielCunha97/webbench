@@ -26,7 +26,7 @@ var svg = d3.select('body').append('svg')
 		.style("font", "12px sans-serif")
 		.text("tooltip");*/
   
-d3.json('files/ResourcesTimes.json', function(err, json) {
+d3.json('files/edition_cnn_comResourcesTimes.json', function(err, json) {
   
   
   var force = d3.layout.force()

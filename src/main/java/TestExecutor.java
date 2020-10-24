@@ -101,11 +101,11 @@ public class TestExecutor {
         System.out.println("Total time: " +logger.calculateTotalTime());
         System.out.println("Complete KLM Input result: " +logger.getCompleteKLMInput());
         logger.calculateTotalOperators(logger.cleanKlmString, KLMModel.instance().getOperatorsTimes());
-
+        String fileName = driver.getCurrentUrl().split("//",2)[1].split("/")[0].replace(".", "_");
         if (logger.getOperatorsCount().size() > 0 ) {
             // save these values in a csv file
             csvWriter.SaveKLMString(logger.cleanKlmString);
-            csvWriter.SaveStatistics(logger.getOperatorsCount(), pageLoadTime_Seconds);
+            csvWriter.SaveStatistics(logger.getOperatorsCount(), pageLoadTime_Seconds, fileName);
 
             // go through the array and return the operators with their percentage
             for(int i=0; i <logger.getOperatorsCount().size(); i++) {
@@ -115,9 +115,8 @@ public class TestExecutor {
         }
 
         Util.analyzeLog(driver);
-        String fileName = driver.getCurrentUrl().split("//",2)[1].split("/")[0].replace(".", "_");
         Util.getPerfEntryLogs(driver, fileName);
-    //    HarFileModel harFileModel = new HarFileModel();
+        HarFileModel harFileModel = new HarFileModel(fileName);
     }
 
     private void executeCommand(String command, String target, String value) throws InterruptedException {

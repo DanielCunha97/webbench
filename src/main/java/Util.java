@@ -75,8 +75,6 @@ public class Util {
         try
         {
             for (LogEntry le : logEntries) {
-                //Contabilizar o caso do post no click do form de registo!
-
                 JSONObject json = new JSONObject(le.getMessage());
                 JSONObject message = json.getJSONObject("message");
                 String method = message.getString("method");
@@ -108,7 +106,7 @@ public class Util {
                                             if(methodRes.equals("Network.responseReceived" )){
                                                 JSONObject response = paramsRes.getJSONObject("response");
                                                 if(response.getString("url").equals(request.get("url"))){
-                                                    System.out.println(request.toString());
+                                                    //System.out.println(request.toString());
                                                     JSONObject times = response.getJSONObject("timing");
                                                     Double dnsTime = times.getDouble("dnsEnd") - times.getDouble("dnsStart");
                                                     Double sslTime = times.getDouble("sslEnd") - times.getDouble("sslStart");
@@ -125,9 +123,6 @@ public class Util {
                                 }
                             }
                         }
-                    }
-                    if(method.equals("Network.responseReceived" )){
-
                     }
                 }
             }
@@ -152,22 +147,4 @@ public class Util {
             e.printStackTrace();
         }
     }
-
-  /*  public static void getHAR(WebDriver driver, String fileName) throws IOException {
-        String destinationFile = "D:/Programas/XAMPP/htdocs/webbench/src/main/java/files/" + fileName + ".har";
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-        ((JavascriptExecutor) driver).executeScript(
-                "!function(e,o){e.src=\"D:/Programas/XAMPP/htdocs/webbench/src/main/javascript/assets/chromePerfLogsHAR.js\"," +
-                        "e.onload=function(){jQuery.noConflict(),console.log(\"jQuery injected\")},document.head.appendChild(e)}(document.createElement(\"script\"));");
-        File file = new File(destinationFile);
-        if(file.exists()){
-            file = new File("D:/Programas/XAMPP/htdocs/webbench/src/main/java/files/WebSiteHarFileSecondRun.har");
-        }
-        file.getParentFile().mkdirs();
-        FileWriter harFile = new FileWriter(file);
-        harFile.write((String) ((JavascriptExecutor) driver).executeAsyncScript(
-                "return module.getHarFromMessages(arguments[0])", getPerfEntryLogs(driver).toString()));
-        harFile.close();
-    }*/
 }

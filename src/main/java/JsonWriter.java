@@ -16,7 +16,7 @@ public class JsonWriter {
     public JsonWriter(){
     }
 
-    public void SaveDiffResourcesTimes (List<ResourceNodeModel> nodeList, ArrayList<ResourcesTimeModel> resourcesTimeModels) {
+    public void SaveDiffResourcesTimes (List<ResourceNodeModel> nodeList, ArrayList<ResourcesTimeModel> resourcesTimeModels, String fileName) {
         try {
             JSONArray node = new JSONArray();
             JSONArray link = new JSONArray();
@@ -30,7 +30,7 @@ public class JsonWriter {
             }
             for (ResourcesTimeModel resourceModel:resourcesTimeModels) {
                 JSONObject arrayObj = new JSONObject();
-                if(resourceModel.diffResourceTime > 0 && resourceModel.diffResourceTime2 > 0){
+               // if(resourceModel.diffResourceTime > 0 && resourceModel.diffResourceTime2 > 0){
                     arrayObj.put("source",Integer.parseInt(resourceModel.firstRsrc.split("-")[0]));
                     arrayObj.put("target",Integer.parseInt(resourceModel.secondRsrc.split("-")[0]));
                     String dt = "2020-01-01";  // Start date
@@ -46,13 +46,13 @@ public class JsonWriter {
                     arrayObj.put("percentileFive",resourceModel.percentil_cinco);
                     arrayObj.put("percentileNinetyFive",resourceModel.percentil_noventaCinco);
                     link.add(arrayObj);
-                }
+                //}
             }
 
             JSONObject obj = new JSONObject();
             obj.put("nodes", node);
             obj.put("links",link);
-            FileWriter writer = new FileWriter(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/javascript/files/TwitterResourcesTimes.json"));
+            FileWriter writer = new FileWriter(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/javascript/files/" + fileName + "ResourcesTimes.json"));
             writer.write(obj.toJSONString());
             writer.close();
         } catch (Exception e) {
