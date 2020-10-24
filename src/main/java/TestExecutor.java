@@ -1,9 +1,15 @@
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import net.lightbody.bmp.BrowserMobProxy;
+import net.lightbody.bmp.BrowserMobProxyServer;
+import net.lightbody.bmp.client.ClientUtil;
+import net.lightbody.bmp.proxy.CaptureType;
+import org.apache.commons.lang3.time.StopWatch;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
@@ -14,6 +20,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.Inet4Address;
+import java.util.*;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -27,26 +36,41 @@ public class TestExecutor {
     private TestLogger logger = new TestLogger();
     private CsvWriter csvWriter = new CsvWriter();
 
-    public TestExecutor(XMLParser test){
+    public TestExecutor(XMLParser test) throws IOException {
         this.test= test;
+        NodeList actions= test.getDocument().getElementsByTagName("selenese");
         ChromeOptions options = new ChromeOptions();
         options.addExtensions(new File("D:/Documentos/Mestrado/dissertação/chromeDriver.crx"));
-       // options.addArguments("–load-extension=" + "/Users/ruipedroduarte/Downloads/chromeDriver.crx");
+        // options.addArguments("–load-extension=" + "/Users/ruipedroduarte/Downloads/chromeDriver.crx");
         options.addArguments("--auto-open-devtools-for-tabs");
 
         ChromeOptions caps = new ChromeOptions();
-        //DesiredCapabilities caps = DesiredCapabilities.chrome();
+        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
         LoggingPreferences logPrefs = new LoggingPreferences();
         logPrefs.enable(LogType.BROWSER, Level.ALL);
+        logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
+
+        Map<String, Object> perfLogPrefs = new HashMap<String, Object>();
+        perfLogPrefs.put("traceCategories", "browser,devtools.timeline,devtools");
+
         caps.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+        capabilities.setCapability("goog:loggingPrefs", logPrefs);
 
+
+        //capabilities.merge(options);
         options.merge(caps);
+        options.setExperimentalOption("perfLoggingPrefs", perfLogPrefs);
 
-        driver = new ChromeDriver(options);
+        driver = new ChromeDriver(capabilities);
+        driver.get(actions.item(0).getChildNodes().item(3).getTextContent());
+
+        // driver.navigate().to(test.getDocument().getElementsByTagName("selenese").item(0).getChildNodes()
+        //       .item(3).getTextContent());
+        StopWatch pageLoad = new StopWatch();
+        pageLoad.start();
+
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-
-        NodeList actions= test.getDocument().getElementsByTagName("selenese");
-
 
         try {
             System.out.println("Actions length: " +actions.getLength());
@@ -69,15 +93,19 @@ public class TestExecutor {
             }
         }catch(Exception e){ e.printStackTrace(); }
 
+        pageLoad.stop();
+        //Get the time
+        float pageLoadTime_Seconds = (float)pageLoad.getTime() / 1000;
+        System.out.println("Total Page Load Time: " + pageLoadTime_Seconds + " seconds");
+
         System.out.println("Total time: " +logger.calculateTotalTime());
         System.out.println("Complete KLM Input result: " +logger.getCompleteKLMInput());
         logger.calculateTotalOperators(logger.cleanKlmString, KLMModel.instance().getOperatorsTimes());
-
-
+        String fileName = driver.getCurrentUrl().split("//",2)[1].split("/")[0].replace(".", "_");
         if (logger.getOperatorsCount().size() > 0 ) {
             // save these values in a csv file
             csvWriter.SaveKLMString(logger.cleanKlmString);
-            csvWriter.SaveStatistics(logger.getOperatorsCount());
+            csvWriter.SaveStatistics(logger.getOperatorsCount(), pageLoadTime_Seconds, fileName);
 
             // go through the array and return the operators with their percentage
             for(int i=0; i <logger.getOperatorsCount().size(); i++) {
@@ -87,8 +115,9 @@ public class TestExecutor {
         }
 
         Util.analyzeLog(driver);
+        Util.getPerfEntryLogs(driver, fileName);
+        HarFileModel harFileModel = new HarFileModel(fileName);
     }
-
 
     private void executeCommand(String command, String target, String value) throws InterruptedException {
         String[] keyValue = null;
@@ -101,7 +130,7 @@ public class TestExecutor {
                 logger.addItem(new LogWebItem(KLMModel.instance().getPredictedTime("open",value,0.0d,0.0d),
                         KLMModel.instance().getKLMInput("open",value)));
                 System.out.println("Opening page " + target);
-                driver.get(target);
+               // driver.get(target);
                 break;
             case "doubleClick":
             case "click":

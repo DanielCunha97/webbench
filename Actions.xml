@@ -13,16 +13,16 @@
 <selenese>
 	<command>type</command>
 	<target><![CDATA[name=registrationEmail]]></target>
-	<value><![CDATA[canila@gmail.com]]></value>
+	<value><![CDATA[diorebelo97@gmail.com]]></value>
 </selenese>
 <selenese>
 	<command>type</command>
 	<target><![CDATA[name=registrationPassword]]></target>
-	<value><![CDATA[MERDA123*mer]]></value>
+	<value><![CDATA[Sporting31_34<]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[css=svg.indexes__CheckboxIcon-sc-30af8a-1.bcTmBE.checkbox-open-icon]]></target>
+	<target><![CDATA[//div[@id='registration-page-content']/form/label/span]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
@@ -32,7 +32,7 @@
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[//button[@id='registration-button']/span]]></target>
+	<target><![CDATA[id=registration-button]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
-</TestCase>
+</TestCase> 
