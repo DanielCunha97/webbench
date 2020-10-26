@@ -74,6 +74,8 @@ public class CsvWriter {
             sb.append("Percentile 5 between them");
             sb.append(';');
             sb.append("Percentile 95 between them");
+            sb.append(';');
+            sb.append("Resource Probability");
             sb.append('\n');
             resourcesTimeModels.forEach(resource -> {
                 sb.append(resource.firstRsrc + ";");
@@ -83,7 +85,8 @@ public class CsvWriter {
                 // sb.append(resource.diffResourceTime2 + ";");
                 sb.append(resource.median + ";");
                 sb.append(resource.percentil_cinco + ";");
-                sb.append(resource.percentil_noventaCinco);
+                sb.append(resource.percentil_noventaCinco + ";");
+                sb.append(resource.probability);
                 sb.append('\n');
             });
             writer.write(sb.toString());
