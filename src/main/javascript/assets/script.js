@@ -88,22 +88,14 @@ d3.json('files/edition_cnn_comResourcesTimes.json', function(err, json) {
     .attr('r', 5)
     .call(force.drag)
 	.on("mouseover", function(d) { 
-				tooltip.html(()=> {
-					let innerTableContent = "<tr>"+
-                            "<th scope='row'>Name: </th>"+ "<td>"+d.name+"</td>"+
-							"<th scope='row'>Type:</th>"+ "<td>"+d.type+"</td>"+
-                            "</tr>";
-					return "<div class='card bg-dark'>"+"<div class='card-body'>"+
-                        "<table class='table table-striped table-dark'>"+
-                        "<tbody>"+
-                        innerTableContent +
-                        "</tbody>" +
-                        "</table>"+
-                        "</div></div>";
-					}).style("left", (d3.event.pageX) + "px")
-				.style("top", (d3.event.pageY) + "px");
-				tooltip.style("visibility", "visible");
-			})
+			tooltip.style("visibility", "visible");
+				tooltip.html("Name: "+ d.name + 
+							 "<p/>Type: " + d.type +
+							"<p/>Probability: "  + d.probability + "% ")
+					.style("left", (d3.event.pageX) + "px")
+					.style("top", (d3.event.pageY + 10) + "px");
+				})
+	
 	  .on("mouseout",  function() { 
 	  	return tooltip.style("visibility", "hidden");
 	  })

@@ -113,7 +113,7 @@ public class HarFileModel {
         return latencies.get(index-1);
     }
 
-    private void calculateResourcesFromTests(LinkedHashMap<String, ArrayList<ResourceInfo>> resourcesMap){
+    private void calculateResourcesFromTests(LinkedHashMap<String, ArrayList<ResourceInfo>> resourcesMap, int fileCount){
         List<ResourceNodeModel> nodeList = new ArrayList<ResourceNodeModel>();
         LinkedHashMap<String, ArrayList<ResourceInfo>> resourcesTtimes = new LinkedHashMap<String, ArrayList<ResourceInfo>>(resourcesMap);
         ArrayList<ResourcesTimeModel> diffRsrcTimes = new ArrayList<>();
@@ -122,6 +122,7 @@ public class HarFileModel {
             ResourceNodeModel resourceNode = new ResourceNodeModel();
             resourceNode.firstRsrc = hashMap.getKey().toString();
             resourceNode.type = hashMap.getValue().iterator().next().resourceType;
+            resourceNode.probability = hashMap.getValue().size() >= fileCount ? 100 : ((float)hashMap.getValue().size()/fileCount)*100;
             nodeList.add(resourceNode);
             //---------------------------------------------------
             //looking for next pair on hashmap
@@ -151,6 +152,7 @@ public class HarFileModel {
                     resourcesTimeModel.median = (double) resourcesTimeModel.diffResourceTimes.get(resourcesTimeModel.diffResourceTimes.size()/2);
                 resourcesTimeModel.percentil_cinco = percentile(resourcesTimeModel.diffResourceTimes,5);
                 resourcesTimeModel.percentil_noventaCinco = percentile(resourcesTimeModel.diffResourceTimes,95);
+                resourcesTimeModel.probability = resourceNode.probability;
                 // percentagem
                 diffRsrcTimes.add(resourcesTimeModel);
             }
@@ -165,7 +167,6 @@ public class HarFileModel {
 
     public void FillResourcesMap(String fileName) {
         int[] count = new int[]{0};
-        int[] repeatedCount = new int[]{0};
         int[] fileCount = new int[]{0};
         LinkedHashMap<String, ArrayList<ResourceInfo>> newTimeHarMap = new LinkedHashMap<String, ArrayList<ResourceInfo>>();
         ArrayList<String> checkDuplicates = new ArrayList<String>();
@@ -190,7 +191,6 @@ public class HarFileModel {
                 otherHar.getLog().getEntries().forEach(otherEntry -> {
                     Set<String> keys = timeHarMap.keySet();
                     for(String key : keys){
-                        System.out.println("Key: " + key);
                         //se o url já existir no dicionário
                         if(otherEntry.getRequest().getUrl().equals(key)){
                             ResourceInfo resourceInfo = new ResourceInfo();
@@ -219,47 +219,17 @@ public class HarFileModel {
                 });
             }
 
-            // Adicionar os counts no hashMap antes de enviar para a função de calcular os tempos
+            // add resources IDs to hashMap
             Iterator<Map.Entry<String, ArrayList<ResourceInfo>>> entries = timeHarMap.entrySet().iterator();
             while(entries.hasNext()){
                 Map.Entry<String, ArrayList<ResourceInfo>> entry = entries.next();
                 ArrayList<ResourceInfo> resourcesList = new ArrayList<>();
                 resourcesList.addAll(entry.getValue());
-                String entryKey = entry.getKey();
                 newTimeHarMap.put(count[0] + "-" + entry.getKey(), resourcesList);
                 count[0]++;
             }
-
-
-           /* Har har = harReader.readFromFile(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/java/files/edition_cnn_com_4.har"));
-            Har secondHar = harReader.readFromFile(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/java/files/edition_cnn_com_5.har"));
-
-            har.getLog().getEntries().forEach(entry -> {
-                secondHar.getLog().getEntries().forEach(secondEntry -> {
-                    String x = entry.get_priority();
-                    String y = entry.get_resourceType();
-                    if(entry.getRequest().getUrl().equals(secondEntry.getRequest().getUrl()) && !checkDuplicates.contains(secondEntry.getRequest().getUrl())){
-                        if(entry.get_priority().equals("VeryHigh") || entry.get_priority().equals("High")){
-                            ResourceInfo resourceInfo = new ResourceInfo();
-                            resourceInfo.resourceTime = (float) entry.getTime();
-                            resourceInfo.resourceType = entry.get_resourceType();
-                            checkDuplicates.add(entry.getRequest().getUrl());
-                            // to add different keys, because there are resources with the same url
-                            timeMap.put(count[0] + "-" + entry.getRequest().getUrl(), resourceInfo);
-                            ResourceInfo secondResourceInfo = new ResourceInfo();
-                            secondResourceInfo.resourceTime = (float) secondEntry.getTime();
-                            secondResourceInfo.resourceType = secondEntry.get_resourceType();
-                            timeMapSecondRun.put(count[0] + "-" + secondEntry.getRequest().getUrl(), secondResourceInfo);
-                            count[0]++;
-                        }
-                    }
-                });
-            });
-*/
-            // calculate time difference between resource 1 and resource 2
-           //-- calculateDiffResourcesTimes();
-           // calculateResourcesTimes();
-            calculateResourcesFromTests(newTimeHarMap);
+            // calculate time difference between all resources
+            calculateResourcesFromTests(newTimeHarMap, fileCount[0] + 1);
         } catch (Exception ex) {
             // e.printStackTrace();
             System.out.println(ex.getMessage());

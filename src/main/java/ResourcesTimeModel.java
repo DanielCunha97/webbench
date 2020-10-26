@@ -10,6 +10,7 @@ public class ResourcesTimeModel {
     public double median;
     public float percentil_cinco;
     public float percentil_noventaCinco;
+    public float probability;
 
     public ResourcesTimeModel() {
     }
