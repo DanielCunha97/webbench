@@ -26,7 +26,7 @@ var svg = d3.select('body').append('svg')
 		.style("font", "12px sans-serif")
 		.text("tooltip");*/
   
-d3.json('files/edition_cnn_comResourcesTimes.json', function(err, json) {
+d3.json('files/www_nytimes_comResourcesTimes.json', function(err, json) {
   
   
   var force = d3.layout.force()
@@ -82,16 +82,21 @@ d3.json('files/edition_cnn_comResourcesTimes.json', function(err, json) {
     .data(json.nodes)
     .enter().append('circle')
     .attr('class', 'node')
+	//.style("fill", function (d) {
+	//			return color(d.group);
+	//		})
 	.style("fill", function (d) {
-				return color(d.group);
-			})
+		if(d.type == "XHR")
+			return color(d.group);
+	})
     .attr('r', 5)
     .call(force.drag)
 	.on("mouseover", function(d) { 
 			tooltip.style("visibility", "visible");
 				tooltip.html("Name: "+ d.name + 
 							 "<p/>Type: " + d.type +
-							"<p/>Probability: "  + d.probability + "% ")
+							"<p/>Probability: "  + d.probability + "% " + 
+							"<p/>Cacheable: "  + d.cacheable)
 					.style("left", (d3.event.pageX) + "px")
 					.style("top", (d3.event.pageY + 10) + "px");
 				})
@@ -161,7 +166,8 @@ d3.json('files/edition_cnn_comResourcesTimes.json', function(err, json) {
 				//Put them back to opacity=1
 				nodes.style("opacity", 1);
 				nodes.style("fill", function (d) {
-				return color(d.group);
+					if(d.type == "XHR")
+						return color(d.group);
 			});
 				links.style("opacity", 1);
 				links.style("stroke", "#ccc");

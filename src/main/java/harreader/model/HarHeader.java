@@ -2,7 +2,10 @@ package harreader.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonGenerator;
 
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -58,6 +61,19 @@ public class HarHeader {
         return Objects.equals(name, harHeader.name) &&
                 Objects.equals(value, harHeader.value) &&
                 Objects.equals(comment, harHeader.comment);
+    }
+
+    public void writeHar(JsonGenerator g) throws JsonGenerationException, IOException {
+        g.writeStartObject();
+        g.writeStringField("name", this.name);
+        g.writeStringField("value", this.value);
+
+        if (this.comment != null) {
+            g.writeStringField("comment", this.comment);
+        }
+
+        // this.customFields.writeHar(g);
+        g.writeEndObject();
     }
 
     @Override

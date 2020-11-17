@@ -9,6 +9,8 @@ public class ResourceNodeModel {
 
         public String type;
 
+        public String cachedResource;
+
         public float probability;
 
         public ResourceNodeModel(){

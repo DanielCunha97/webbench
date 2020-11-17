@@ -4,12 +4,11 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonGenerator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.io.IOException;
+import java.util.*;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -186,6 +185,34 @@ public class HarResponse {
                 Objects.equals(bodySize, that.bodySize) &&
                 Objects.equals(comment, that.comment) &&
                 Objects.equals(additional, that.additional);
+    }
+
+    public void writeHar(JsonGenerator g) throws JsonGenerationException, IOException {
+        g.writeObjectFieldStart("response");
+
+        g.writeArrayFieldStart("headers");
+        Iterator var2 = this.headers.iterator();
+
+        while(var2.hasNext()) {
+            HarHeader header = (HarHeader)var2.next();
+            header.writeHar(g);
+        }
+
+        g.writeEndArray();
+
+        // this.queryString.writeHar(g);
+       /* if (this.postData != null) {
+            this.postData.writeHar(g);
+        }*/
+
+        // g.writeNumberField("headersSize", this.headersSize);
+        // g.writeNumberField("bodySize", this.bodySize);
+        if (this.comment != null) {
+            g.writeStringField("comment", this.comment);
+        }
+
+        // this.customFields.writeHar(g);
+        g.writeEndObject();
     }
 
     @Override

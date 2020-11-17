@@ -26,6 +26,27 @@
         background:#fff; 
         padding-right: 15px; 
       }
+	  .square{
+		border-style: solid;
+		border-color: black;
+		margin-left: 90px;
+		margin-top: 10px;
+		border-width: thin;
+		padding: 5px;
+	  }
+	  .firstSquare{
+		border-style: solid;
+		border-color: black;
+		margin-left: 40px;
+		margin-top: 10px;
+		border-width: thin;
+		padding: 5px;
+	  }
+	  .squareText{
+		margin-top:10px";
+		text-align: center;
+		font-size:10px;
+	  }
       </style>
     <title>KLM Report</title>
 </head>
@@ -33,14 +54,51 @@
      <div class="container-fluid">
     	<div class="row ">
 	        <div class="col-md-12">
-	            <h3 style = "margin-top:40px;"> Recommendations </h3>
+	            <h3 style = "margin-top:40px;"> Type of interaction: </h3>
+				<h6 style = "margin-bottom:20px;" id="klmSequence"> </h6>
 	        </div>
 	    </div>
 	    <div class="row ">
-	        <div class="col-md-6">
+	        <div class="col">
                 <h4 class ="solidLine"><span>Facts</span></h4>
+				<div class="row ">
+					<div class = "firstSquare" class="col">
+						<h6 class = "squareText"> Keypress operator (K)</h6>
+						<h6 id = "kPercentage" style = "text-align: center;" ></h6>
+						<h6 style = "font-size:10px; text-align: center;"> of the operators </h6>
+					</div>
+					<div class = "square" class="col">
+						<h6 style = "font-size:10px; text-align: center;"> Mental Operator (M)</h6>
+						<h6 id = "MPercentage" style = "text-align: center;" ></h6>
+						<h6 style = "font-size:10px; text-align: center;"> of the operators </h6>
+					</div>
+					<div class = "square" class="col">
+						<h6 class = "squareText"> Pointing operator (P)</h6>
+						<h6 id = "PPercentage" style = "text-align: center;" ></h6>
+						<h6 style = "font-size:10px; text-align: center;"> of the operators </h6>
+					</div>
+					<div class="row ">
+					<div class = "firstSquare" class="col">
+						<h6 class = "squareText"> Clicking operator (B)</h6>
+						<h6 id = "BPercentage" style = "text-align: center;" ></h6>
+						<h6 style = "font-size:10px; text-align: center;"> of the operators </h6>
+					</div>
+					<div class = "square" class="col">
+						<h6 class = "squareText"> Switching operator (H)</h6>
+						<h6 id = "HPercentage" style = "text-align: center;" ></h6>
+						<h6 style = "font-size:10px; text-align: center;"> of the operators </h6>
+					</div>
+					<div class = "square" class="col">
+						<h6 class = "squareText"> Waiting System operator (W)</h6>
+						<h6 style = "text-align: center;" >neglected</h6>
+						<h6 style = "font-size:10px; text-align: center;">  </h6>
+					</div>
+					</div>
+				</div>
+				<h4 style = "margin-top:40px;" class ="solidLine"><span>General Recomendation:</span></h4>
+				<h6 style = "font-size:15px; margin-top:40px;" id="finalRecomendation"> </h6>				
             </div>           
-	        <div class="col-md-6">
+	        <div class="col">
                 <div class ="dotted">
                     <div style="padding-left:25px; float:left;">
                         <h4 style = "margin-bottom:15px; float:left;"> Other Recommendations</h4>
@@ -48,6 +106,7 @@
                     </div>
                 </div>               
 	        </div>
+		</div>
 	</div>
 
     <div class = "container-fluid" >
@@ -70,16 +129,57 @@
         </div>
   
     </div>
-
-
- 
 	
 	<script >
         const recomendationsArray = ["The component uses too many text inputs. If you are dealing with a text field entry based on names, username and password, the suggestion is to add to the interface a component 'Save my login data'",
         "",""];
 
+		var recomendationResult = document.getElementById('finalRecomendation');
+		
+		<!-- document.getElementById("operators").innerHTML = localStorage.getItem("operators"); -->
+		document.getElementById("klmSequence").innerHTML = localStorage.getItem("klmString");
+		debugger;
+		const timesOperators = [];
+		timesOperators.push(localStorage.getItem("operatorTimes"));
+		var totalTime = localStorage.getItem("klmTime").replace("secs", "");
+		const MOperator = (timesOperators[0].split(",")[0]*100)/totalTime;
+		const HOperator = (timesOperators[0].split(",")[1]*100)/totalTime;
+		const POperator = (timesOperators[0].split(",")[2]*100)/totalTime;
+		const BOperator = (timesOperators[0].split(",")[3]*100)/totalTime;
+		const KOperator = (timesOperators[0].split(",")[4]*100)/totalTime;
+		
+		let recomendation;
+		// keyboard and mouse
+		if ((MOperator >= 32.02 && MOperator<=44.15) && (HOperator >= 3.4  && HOperator <= 5.96) && (POperator >= 12.09 && POperator <= 21.39) && (BOperator >=0.92 && BOperator <= 4.11) && (KOperator >= 25.51 && KOperator <= 48.37)){
+			console.log("mouse and keyboard ");
+			recomendation = "of the mixed type (keyboard and mouse)!";
+			recomendationResult.innerHTML = 'The user performed a task whose interaction was ' + recomendation;
+		}
+		// mouse
+		else if ((MOperator >= 51.31 && MOperator <=58.71) && (HOperator >= 0.31 && HOperator <= 6.78) && (POperator >= 29.20 && POperator <= 40.94) && ( BOperator >= 5.31 && BOperator <= 7.44) && KOperator == 0){
+			console.log("mouse ");
+			recomendation = "based on navigation!";
+			recomendationResult.innerHTML = 'The user performed a task whose interaction was ' + recomendation;
+		}
+		// keyboard
+		else if ((MOperator >= 18.44 && MOperator <=37.76) && (HOperator >= 2.44 && HOperator <= 4.83) && (POperator >= 6.33 && POperator <= 20.34) && ( BOperator >= 1.19 && BOperator <= 3.6) && (KOperator >= 34.82 && KOperator <= 70.76)){
+			console.log("keyboard");
+			recomendation = "based on keyboard!";
+			recomendationResult.innerHTML = 'The user performed a task whose interaction was ' + recomendation;
+		}
+		else{
+			recomendation = "No recomendations for the given results";
+			recomendationResult.innerHTML = recomendation;
+		}
 
+		document.getElementById("kPercentage").innerHTML = Math.round(KOperator) + "%";
+		document.getElementById("MPercentage").innerHTML = Math.round(MOperator) + "%";
+		document.getElementById("HPercentage").innerHTML = Math.round(HOperator) + "%";
+		document.getElementById("PPercentage").innerHTML = Math.round(POperator) + "%";
+		document.getElementById("BPercentage").innerHTML = Math.round(BOperator) + "%";
 
+		
+		debugger;
 
     </script>
 

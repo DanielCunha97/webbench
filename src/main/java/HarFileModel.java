@@ -15,6 +15,7 @@ public class HarFileModel {
     private LinkedHashMap<String, ResourceInfo> timeMap = new LinkedHashMap<String, ResourceInfo>();
     private LinkedHashMap<String, ResourceInfo> timeMapSecondRun = new LinkedHashMap<String, ResourceInfo>();
     private LinkedHashMap<String, ArrayList<ResourceInfo>> timeHarMap = new LinkedHashMap<String, ArrayList<ResourceInfo>>();
+    private  ArrayList<String> combinationsArray = new ArrayList<>();
 
     public HarFileModel(String fileName) {
         this.filename = fileName;
@@ -24,37 +25,6 @@ public class HarFileModel {
     public LinkedHashMap<String, ResourceInfo> GetTime() {
         return timeMap;
     }
-
- /*   public void calculateDiffResourcesTimes() {
-        LinkedHashMap<String, LinkedHashMap<Float, String>> resourcesTtimes = new LinkedHashMap<String, LinkedHashMap<Float, String>>(timeMap);
-        ArrayList<ResourcesTimeModel> diffRsrcTimes = new ArrayList<>();
-        List<ResourceNodeModel> nodeList = new ArrayList<ResourceNodeModel>();
-        for (Map.Entry hashMap : resourcesTtimes.entrySet()) {
-            // gravar apenas os nodes para o grafo (firstResources)
-            ResourceNodeModel resourceNode = new ResourceNodeModel();
-            resourceNode.firstRsrc = hashMap.getKey().toString();
-            nodeList.add(resourceNode);
-            //----------------------------------
-            timeMap.remove(hashMap.getKey());
-            for (Map.Entry pair : timeMap.entrySet()) {
-                    ResourcesTimeModel resourcesTimeModel = new ResourcesTimeModel();
-                    // first resource
-                    resourcesTimeModel.firstRsrc = hashMap.getKey().toString();
-                    System.out.println(pair.getKey() + " = " + pair.getValue());
-                    resourcesTimeModel.secondRsrc = pair.getKey().toString();
-                    resourcesTimeModel.diffResourceTime = Math.abs((float) hashMap.getValue() - (float) pair.getValue());
-                    diffRsrcTimes.add(resourcesTimeModel);
-                }
-        }
-        csvWriter.SaveDiffResourcesTimes(diffRsrcTimes);
-        System.out.println("list of nodes : " + nodeList);
-        Set<ResourceNodeModel> nodesWithoutDuplicates = new LinkedHashSet<ResourceNodeModel>(nodeList);
-        nodeList.clear();
-        nodeList.addAll(nodesWithoutDuplicates);
-
-        System.out.println("list of nodes without duplicates : " + nodeList);
-        jsonWriter.SaveDiffResourcesTimes(nodeList, diffRsrcTimes);
-    }*/
 
     public void calculateResourcesTimes() {
         List<Float> numArray = new ArrayList<>();
@@ -123,6 +93,7 @@ public class HarFileModel {
             resourceNode.firstRsrc = hashMap.getKey().toString();
             resourceNode.type = hashMap.getValue().iterator().next().resourceType;
             resourceNode.probability = hashMap.getValue().size() >= fileCount ? 100 : ((float)hashMap.getValue().size()/fileCount)*100;
+            resourceNode.cachedResource = hashMap.getValue().iterator().next().cachedResource.contains("no-cache") ? "false" : "true";
             nodeList.add(resourceNode);
             //---------------------------------------------------
             //looking for next pair on hashmap
@@ -165,6 +136,74 @@ public class HarFileModel {
         jsonWriter.SaveDiffResourcesTimes(nodeList, diffRsrcTimes, filename);
     }
 
+    private void combinations(ArrayList<String> resources, int len, int startPosition, String[] result){
+        if (len == 0){
+            System.out.println(Arrays.toString(result));
+            combinationsArray.add(Arrays.toString(result));
+            return;
+        }
+        for (int i = startPosition; i <= resources.size()-len; i++){
+            result[result.length - len] = resources.get(i);
+            combinations(resources, len-1, i+1, result);
+        }
+    }
+
+    private void calculateCombinationPercentage(LinkedHashMap<String, ArrayList<ResourceInfo>> resourcesPerRun, int fileCount){
+        // <combination, numberOfCounts>
+        LinkedHashMap<String, Integer> countCombinations = new LinkedHashMap<>();
+        int[] count = new int[]{0};
+        int[] countRun = new int[]{0};
+        // foreach run/file
+        for (int i =0; i < fileCount; i++) {
+            // foreach combination
+            for(String combination : combinationsArray){
+                String combinationFormat = combination.replace("[","").replace("]", "").replace(" ", "");
+                String[] resource = combinationFormat.split(","); // resources of each combination
+                for(String combinationResource : resource){
+                    for(Map.Entry<String, ArrayList<ResourceInfo>> hashMap : resourcesPerRun.entrySet()){
+                        //verificar se em cada key do hashmap existe aquele resource com o run i
+                        if(combinationResource.equals(hashMap.getKey())){ // combination resource there is on the resources list
+                            //iterating over Resource values only
+                            Iterator<ResourceInfo> values = hashMap.getValue().iterator();
+                            while(values.hasNext()){
+                                ResourceInfo infoValue = values.next();
+                                if(infoValue.harRun == i){ // this resource there is on run i
+                                    count[0]++;
+                                    break;  //encontrou, então sair do loop
+                                }
+                            }
+
+                        }
+                    }
+                }
+                if (count[0] == resource.length) { //combinação existe no run i
+                    countRun[0]++;
+                    if(countCombinations.containsKey(Arrays.toString(resource))){
+                        int numberRuns = countCombinations.get(Arrays.toString(resource));
+                        countCombinations.put(Arrays.toString(resource), numberRuns + countRun[0]); //"update" do count da combinação
+                    }
+                    else {
+                        countCombinations.put(Arrays.toString(resource), countRun[0]);
+                    }
+                    count[0] = 0;
+                    countRun[0] = 0;
+                }
+                else{ // esta combinação n existe no run i
+                    if(countCombinations.containsKey(Arrays.toString(resource))){
+                        int numberRuns = countCombinations.get(Arrays.toString(resource));
+                        countCombinations.put(Arrays.toString(resource), numberRuns + countRun[0]);
+                    }
+                    else {
+                        countCombinations.put(Arrays.toString(resource), countRun[0]); // insert combination with count 0
+                    }
+                    count[0] = 0;
+                    countRun[0] = 0;
+                }
+            }
+        }
+        csvWriter.SaveResourcesCombinationsProbabilities(countCombinations, filename, fileCount);
+    }
+
     public void FillResourcesMap(String fileName) {
         int[] count = new int[]{0};
         int[] fileCount = new int[]{0};
@@ -175,12 +214,16 @@ public class HarFileModel {
             File file = new File("D:/Programas/XAMPP/htdocs/webbench/src/main/java/files/" + fileName + ".har");
             Har harTest = harReader.readFromFile(file);
             harTest.getLog().getEntries().forEach(entry -> {
-                ResourceInfo resourceInfo = new ResourceInfo();
-                resourceInfo.resourceTime = (float) entry.getTime();
-                resourceInfo.resourceType = entry.get_resourceType();
-                ArrayList<ResourceInfo> resourcesList = new ArrayList<>();
-                resourcesList.add(resourceInfo);
-                timeHarMap.put(entry.getRequest().getUrl(), resourcesList);
+                if(!entry.getResponse().getHeaders().get(0).getValue().contains("no-cache")){
+                    ResourceInfo resourceInfo = new ResourceInfo();
+                    resourceInfo.resourceTime = (float) entry.getTime();
+                    resourceInfo.resourceType = entry.get_resourceType();
+                    resourceInfo.cachedResource = entry.getResponse().getHeaders().get(0).getValue();
+                    resourceInfo.harRun = fileCount[0];
+                    ArrayList<ResourceInfo> resourcesList = new ArrayList<>();
+                    resourcesList.add(resourceInfo);
+                    timeHarMap.put(entry.getRequest().getUrl(), resourcesList);
+                }
             });
             while (file.exists()){
                 fileCount[0]++;
@@ -193,28 +236,36 @@ public class HarFileModel {
                     for(String key : keys){
                         //se o url já existir no dicionário
                         if(otherEntry.getRequest().getUrl().equals(key)){
-                            ResourceInfo resourceInfo = new ResourceInfo();
-                            resourceInfo.resourceTime = (float) otherEntry.getTime();
-                            resourceInfo.resourceType = otherEntry.get_resourceType();
-                            // Value update
-                            ArrayList<ResourceInfo> values = new ArrayList<>();
-                            values.addAll(timeHarMap.get(key));
-                            values.forEach(value -> {
-                                if(value.resourceTime.equals(resourceInfo.resourceTime)){
-                                    resourceInfo.repeatedCall = true;
-                                }
-                            });
-                            values.add(resourceInfo);
-                            timeHarMap.put(key,values);
+                            if(!otherEntry.getResponse().getHeaders().get(0).getValue().contains("no-cache")) {
+                                ResourceInfo resourceInfo = new ResourceInfo();
+                                resourceInfo.resourceTime = (float) otherEntry.getTime();
+                                resourceInfo.resourceType = otherEntry.get_resourceType();
+                                resourceInfo.cachedResource = otherEntry.getResponse().getHeaders().get(0).getValue();
+                                // Value update
+                                ArrayList<ResourceInfo> values = new ArrayList<>();
+                                values.addAll(timeHarMap.get(key));
+                                values.forEach(value -> {
+                                    if (value.resourceTime.equals(resourceInfo.resourceTime)) {
+                                        resourceInfo.repeatedCall = true;
+                                    }
+                                });
+                                resourceInfo.harRun = fileCount[0];
+                                values.add(resourceInfo);
+                                timeHarMap.put(key, values);
+                            }
                         }
                     }
                     if(!timeHarMap.containsKey(otherEntry.getRequest().getUrl())){
-                        ResourceInfo resourceInfo = new ResourceInfo();
-                        resourceInfo.resourceTime = (float) otherEntry.getTime();
-                        resourceInfo.resourceType = otherEntry.get_resourceType();
-                        ArrayList<ResourceInfo> resourcesList = new ArrayList<>();
-                        resourcesList.add(resourceInfo);
-                        timeHarMap.put(otherEntry.getRequest().getUrl(), resourcesList);
+                        if(!otherEntry.getResponse().getHeaders().get(0).getValue().contains("no-cache")) {
+                            ResourceInfo resourceInfo = new ResourceInfo();
+                            resourceInfo.resourceTime = (float) otherEntry.getTime();
+                            resourceInfo.resourceType = otherEntry.get_resourceType();
+                            resourceInfo.cachedResource = otherEntry.getResponse().getHeaders().get(0).getValue();
+                            resourceInfo.harRun = fileCount[0];
+                            ArrayList<ResourceInfo> resourcesList = new ArrayList<>();
+                            resourcesList.add(resourceInfo);
+                            timeHarMap.put(otherEntry.getRequest().getUrl(), resourcesList);
+                        }
                     }
                 });
             }
@@ -228,8 +279,14 @@ public class HarFileModel {
                 newTimeHarMap.put(count[0] + "-" + entry.getKey(), resourcesList);
                 count[0]++;
             }
-            // calculate time difference between all resources
-            calculateResourcesFromTests(newTimeHarMap, fileCount[0] + 1);
+            // calculate time difference between all resources. FileCount = number of files
+            calculateResourcesFromTests(newTimeHarMap, fileCount[0]);
+            ArrayList<String> allResources = new ArrayList<>(newTimeHarMap.keySet());
+           // for(int i=1; i<= 5; i++) { //starts with combination [R1,R2]. Next iteration [R1,R2,R3]...
+                combinations(allResources, 5, 0, new String [5]);
+            //}
+
+            calculateCombinationPercentage(newTimeHarMap, fileCount[0]);
         } catch (Exception ex) {
             // e.printStackTrace();
             System.out.println(ex.getMessage());
