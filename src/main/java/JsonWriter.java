@@ -25,6 +25,7 @@ public class JsonWriter {
                     arrayObj.put("name", nodeModel.firstRsrc);
                     arrayObj.put("type", nodeModel.type);
                     arrayObj.put("probability", (double) Math.round(nodeModel.probability*100)/100);
+                    arrayObj.put("cacheable", nodeModel.cachedResource);
                     arrayObj.put("id", Integer.parseInt(nodeModel.firstRsrc.split("-")[0]));
                     arrayObj.put("group", 1);
                     node.add(arrayObj);

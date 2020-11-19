@@ -22,6 +22,7 @@ import org.w3c.dom.NodeList;
 import java.io.File;
 import java.io.IOException;
 import java.net.Inet4Address;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
@@ -69,6 +70,17 @@ public class TestExecutor {
         //       .item(3).getTextContent());
         StopWatch pageLoad = new StopWatch();
         pageLoad.start();
+        long date = System.currentTimeMillis();
+        Timestamp currentDate = new Timestamp(date);
+        long currentTimestamp = currentDate.getTime();
+        System.out.println("Current Date: " + currentTimestamp);
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(currentTimestamp);
+        cal.add(Calendar.SECOND, 10);
+        Timestamp currentMore10Sec = new Timestamp(cal.getTime().getTime());
+        long more10Sec = currentMore10Sec.getTime();
+        System.out.println("Current Date more 10 sec: " + currentMore10Sec.getTime());
+        System.out.println("Another timestamp: " + currentMore10Sec);
 
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
@@ -115,7 +127,7 @@ public class TestExecutor {
         }
 
         Util.analyzeLog(driver);
-        Util.getPerfEntryLogs(driver, fileName);
+        Util.getPerfEntryLogs(driver, fileName, currentMore10Sec.getTime());
         HarFileModel harFileModel = new HarFileModel(fileName);
     }
 

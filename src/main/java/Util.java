@@ -1,7 +1,5 @@
-import harreader.model.HarEntry;
-import harreader.model.HarLog;
-import harreader.model.HarRequest;
-import harreader.model.HarResponse;
+import harreader.HarReader;
+import harreader.model.*;
 import harwriter.HarFileWriter;
 import org.codehaus.jackson.JsonParseException;
 import org.json.JSONArray;
@@ -65,7 +63,8 @@ public class Util {
         }
     }
 
-    public static void getPerfEntryLogs(WebDriver driver, String fileName) throws IOException {
+    public static void getPerfEntryLogs(WebDriver driver, String fileName, long openUrlTimeStamp) throws IOException {
+        System.out.println("Another timestamp UTIL: " + openUrlTimeStamp);
         List<LogEntry> logEntries = driver.manage().logs().get(LogType.PERFORMANCE).getAll();
         int[] count = new int[]{0};
         HarLog log = new HarLog();
@@ -76,19 +75,17 @@ public class Util {
         {
             for (LogEntry le : logEntries) {
                 JSONObject json = new JSONObject(le.getMessage());
+                long logEntryTimeStamp = le.getTimestamp();
                 JSONObject message = json.getJSONObject("message");
                 String method = message.getString("method");
                 JSONObject params = message.getJSONObject("params");
                 if (params != null)
                 {
-                    if(method.equals("Network.requestWillBeSent")) {
+                    if(method.equals("Network.requestWillBeSent") && logEntryTimeStamp > openUrlTimeStamp) {
                         JSONObject request = params.getJSONObject("request");
-                        if (request != null) {
+                        if (request != null ) {
                             String docUrl = params.getString("documentURL");
                             if (currentURL.equals(docUrl)) {
-                               // System.out.println(request.toString());
-                               // System.out.println("---------- headers: "+ request.get("headers"));
-                               // System.out.println("---------- priority: "+ request.get("initialPriority"));
                                 if(request.get("initialPriority") != null) {
                                     if (request.get("initialPriority").equals("VeryHigh")
                                     || request.get("initialPriority").equals("High")) {
@@ -106,7 +103,20 @@ public class Util {
                                             if(methodRes.equals("Network.responseReceived" )){
                                                 JSONObject response = paramsRes.getJSONObject("response");
                                                 if(response.getString("url").equals(request.get("url"))){
-                                                    //System.out.println(request.toString());
+                                                    //System.out.println("CACHE: " + response.getBoolean("fromDiskCache"));
+                                                    //System.out.println("prefetch cache: " + response.getBoolean("fromPrefetchCache"));
+                                                    JSONObject responseHeader = response.getJSONObject("headers");
+                                                    if(responseHeader != null) {
+                                                        String cachedResource = responseHeader.getString("cache-control");
+                                                        List<HarHeader> harHeaders = new ArrayList<HarHeader>();
+                                                        HarHeader header = new HarHeader();
+                                                        header.setName("cache-control");
+                                                        header.setValue(cachedResource);
+                                                        harHeaders.add(header);
+                                                        HarResponse harResponse = new HarResponse();
+                                                        harResponse.setHeaders(harHeaders);
+                                                        entry.setResponse(harResponse);
+                                                    }
                                                     JSONObject times = response.getJSONObject("timing");
                                                     Double dnsTime = times.getDouble("dnsEnd") - times.getDouble("dnsStart");
                                                     Double sslTime = times.getDouble("sslEnd") - times.getDouble("sslStart");

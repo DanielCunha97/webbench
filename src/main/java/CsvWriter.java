@@ -2,6 +2,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class CsvWriter {
     private String klmResult;
@@ -83,12 +85,33 @@ public class CsvWriter {
                 sb.append(resource.resourceType + ";");
                 // sb.append(resource.diffResourceTime + ";");
                 // sb.append(resource.diffResourceTime2 + ";");
-                sb.append(resource.median + ";");
-                sb.append(resource.percentil_cinco + ";");
-                sb.append(resource.percentil_noventaCinco + ";");
+                sb.append(Math.round(resource.median) + ";");
+                sb.append(Math.round(resource.percentil_cinco) + ";");
+                sb.append(Math.round(resource.percentil_noventaCinco) + ";");
                 sb.append(resource.probability);
                 sb.append('\n');
             });
+            writer.write(sb.toString());
+            writer.close();
+        } catch (Exception e) {
+            // e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void SaveResourcesCombinationsProbabilities (LinkedHashMap<String, Integer> countCombinations, String fileName, int runs){
+        try {
+            PrintWriter writer = new PrintWriter(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/javascript/files/" + fileName + "ResourcesCombinationProb.csv"));
+            StringBuilder sb = new StringBuilder();
+            sb.append("Combination");
+            sb.append(';');
+            sb.append("Probability");
+            sb.append('\n');
+            for(Map.Entry<String, Integer> hashMap : countCombinations.entrySet()){
+                sb.append(hashMap.getKey() + ";");
+                sb.append((double) Math.round(hashMap.getValue()*100)/runs + ";");
+                sb.append('\n');
+            }
             writer.write(sb.toString());
             writer.close();
         } catch (Exception e) {

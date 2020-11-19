@@ -87,6 +87,10 @@
         createEventsChart();
 
         document.getElementById("recommendationsBtn").onclick = function () {
+			localStorage.setItem("operators", xLabels);
+			localStorage.setItem("klmString", klmSequence);
+			localStorage.setItem("klmTime", klmTime.innerHTML.split(":")[1]);
+			localStorage.setItem("operatorTimes", yLabels);
             location.href = "http://localhost/webbench/src/main/javascript/recomendationsPage.html";
         };
 		
@@ -166,7 +170,7 @@
             }
         
         async function getOperatorsInteractions(){
-           await fetch('files/DataToCharts.csv')
+           await fetch('files/myaccount_nytimes_comDataToCharts.csv')
             .then(response => response.text())
             .then(text => { console.log(text)
                 var csvArray = text.split('\n').slice(1)
@@ -186,7 +190,7 @@
         }
    
         async function getTimePerOperator(){
-            await fetch('files/DataToCharts.csv')
+            await fetch('files/myaccount_nytimes_comDataToCharts.csv')
             .then(response => response.text())
             .then(text => { console.log(text)
                 var csvArray = text.split('\n').slice(1)
@@ -214,7 +218,7 @@
 					var matcheNumber = klmOperator.match(/\d+/g);
 					if(matcheNumber != null){
 						klmTime.innerHTML = 'Estimated time to complete task: ' + klmOperator + ' secs';
-						console.log('Time, Penultima linha:' + klmTime);
+						console.log('Time, Penultima linha:' + klmTime.innerHTML);
 					}else{
 						klmSequence.innerHTML = klmOperator;
 						console.log('elsIF:' + klmSequence);
@@ -371,7 +375,7 @@
          }
 
         async function getOperatorsPercentages(){
-            await fetch('files/DataToCharts.csv')
+            await fetch('files/myaccount_nytimes_comDataToCharts.csv')
             .then(response => response.text())
             .then(text => { console.log(text)
                 var csvArray = text.split('\n').slice(1)
@@ -465,7 +469,7 @@
                 });
             }
     async function getKlmString(){
-       await fetch('files/DataToCharts.csv')
+       await fetch('files/myaccount_nytimes_comDataToCharts.csv')
        .then(response => response.text())
        .then(text => { console.log(text)
            var csvArray = text.split('\n').slice(1)
@@ -504,6 +508,6 @@
 
    </script>
 
-    
+    </div>
 </body>
 </html>

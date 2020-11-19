@@ -2,37 +2,47 @@
 <TestCase>
 <selenese>
 	<command>open</command>
-	<target><![CDATA[https://edition.cnn.com/account/register]]></target>
+	<target><![CDATA[https://www.nytimes.com/]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[name=registrationEmail]]></target>
+	<target><![CDATA[css=path]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>type</command>
-	<target><![CDATA[name=registrationEmail]]></target>
-	<value><![CDATA[diorebelo97@gmail.com]]></value>
+	<target><![CDATA[name=query]]></target>
+	<value><![CDATA[covid 19]]></value>
+</selenese>
+<selenese>
+	<command>sendKeys</command>
+	<target><![CDATA[name=query]]></target>
+	<value><![CDATA[${KEY_ENTER}]]></value>
+</selenese>
+<selenese>
+	<command>click</command>
+	<target><![CDATA[//main[@id='site-content']/div/div[2]/div[2]/ol/li/div/div/div/a/h4]]></target>
+	<value><![CDATA[]]></value>
+</selenese>
+<selenese>
+	<command>click</command>
+	<target><![CDATA[css=button.css-fnhm75.ewfai8r0 > svg.css-1fe7a5q]]></target>
+	<value><![CDATA[]]></value>
 </selenese>
 <selenese>
 	<command>type</command>
-	<target><![CDATA[name=registrationPassword]]></target>
-	<value><![CDATA[Sporting31_34<]]></value>
+	<target><![CDATA[name=query]]></target>
+	<value><![CDATA[covid 19 USA]]></value>
+</selenese>
+<selenese>
+	<command>sendKeys</command>
+	<target><![CDATA[name=query]]></target>
+	<value><![CDATA[${KEY_ENTER}]]></value>
 </selenese>
 <selenese>
 	<command>click</command>
-	<target><![CDATA[//div[@id='registration-page-content']/form/label/span]]></target>
+	<target><![CDATA[//main[@id='site-content']/div/div[2]/div/ol/li/div/div/div/a/h4]]></target>
 	<value><![CDATA[]]></value>
 </selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[css=svg.indexes__CheckboxIcon-sc-30af8a-1.bcTmBE.checkbox-open-icon]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-<selenese>
-	<command>click</command>
-	<target><![CDATA[id=registration-button]]></target>
-	<value><![CDATA[]]></value>
-</selenese>
-</TestCase> 
+</TestCase>

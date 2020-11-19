@@ -216,7 +216,7 @@ public class HarEntry {
         g.writeStringField("_resourceType", this._resourceType);
         g.writeStringField("_priority", this._priority);
         this.request.writeHar(g);
-       // this.response.writeHar(g);
+        this.response.writeHar(g);
        /* if (this.cache != null) {
             this.cache.writeHar(g);
         }*/
