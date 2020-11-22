@@ -99,17 +99,20 @@ public class CsvWriter {
         }
     }
 
-    public void SaveResourcesCombinationsProbabilities (LinkedHashMap<String, Integer> countCombinations, String fileName, int runs){
+    public void SaveResourcesCombinationsProbabilities (ArrayList<ResourceCombination> resourcesCombinationList, String fileName){
         try {
             PrintWriter writer = new PrintWriter(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/javascript/files/" + fileName + "ResourcesCombinationProb.csv"));
             StringBuilder sb = new StringBuilder();
             sb.append("Combination");
             sb.append(';');
             sb.append("Probability");
+            sb.append(';');
+            sb.append("CombinationLength");
             sb.append('\n');
-            for(Map.Entry<String, Integer> hashMap : countCombinations.entrySet()){
-                sb.append(hashMap.getKey() + ";");
-                sb.append((double) Math.round(hashMap.getValue()*100)/runs + ";");
+            for(ResourceCombination combinationInfo : resourcesCombinationList){
+                sb.append(combinationInfo.combination + ";");
+                sb.append((double) Math.round(combinationInfo.percentage) + ";");
+                sb.append(combinationInfo.resourceLength + ";");
                 sb.append('\n');
             }
             writer.write(sb.toString());

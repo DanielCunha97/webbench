@@ -1,9 +1,10 @@
-import edu.umass.cs.benchlab.har.tools.HarFileWriter;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import harreader.HarReader;
 import harreader.model.Har;
+import jdk.nashorn.internal.ir.annotations.Immutable;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.*;
 
 
@@ -136,29 +137,36 @@ public class HarFileModel {
         jsonWriter.SaveDiffResourcesTimes(nodeList, diffRsrcTimes, filename);
     }
 
-    private void combinations(ArrayList<String> resources, int len, int startPosition, String[] result){
-        if (len == 0){
-            System.out.println(Arrays.toString(result));
-            combinationsArray.add(Arrays.toString(result));
-            return;
-        }
-        for (int i = startPosition; i <= resources.size()-len; i++){
-            result[result.length - len] = resources.get(i);
-            combinations(resources, len-1, i+1, result);
+    private void combinations(ArrayList<String> resources, int len){
+        Set<Set<String>> combinations = Sets.combinations(ImmutableSet.copyOf(resources), len);
+        Set r;
+        Iterator combIterator = combinations.iterator();
+        while (combIterator.hasNext()){
+            r = (Set) combIterator.next();
+            //System.out.println("R size: "+ r.size());
+            StringBuffer line = new StringBuffer();
+            Iterator lineIterator = r.iterator();
+            while(lineIterator.hasNext()){
+                if(line.length()>0) line.append(",");
+                line.append(lineIterator.next().toString());
+            }
+            combinationsArray.add(line.toString());
         }
     }
 
     private void calculateCombinationPercentage(LinkedHashMap<String, ArrayList<ResourceInfo>> resourcesPerRun, int fileCount){
+        long sumResourceLength = 0;
         // <combination, numberOfCounts>
-        LinkedHashMap<String, Integer> countCombinations = new LinkedHashMap<>();
+        LinkedHashMap<String, ProcessCombinationModel> countCombinations = new LinkedHashMap<>();
+        ArrayList<ResourceCombination> resourcesCombinationList = new ArrayList<>();
         int[] count = new int[]{0};
         int[] countRun = new int[]{0};
         // foreach run/file
         for (int i =0; i < fileCount; i++) {
             // foreach combination
             for(String combination : combinationsArray){
-                String combinationFormat = combination.replace("[","").replace("]", "").replace(" ", "");
-                String[] resource = combinationFormat.split(","); // resources of each combination
+                //String combinationFormat = combination.replace("[","").replace("]", "").replace(" ", "");
+                String[] resource = combination.split(","); // resources of each combination
                 for(String combinationResource : resource){
                     for(Map.Entry<String, ArrayList<ResourceInfo>> hashMap : resourcesPerRun.entrySet()){
                         //verificar se em cada key do hashmap existe aquele resource com o run i
@@ -169,6 +177,7 @@ public class HarFileModel {
                                 ResourceInfo infoValue = values.next();
                                 if(infoValue.harRun == i){ // this resource there is on run i
                                     count[0]++;
+                                    sumResourceLength = sumResourceLength + infoValue.resourceLength;
                                     break;  //encontrou, então sair do loop
                                 }
                             }
@@ -179,36 +188,62 @@ public class HarFileModel {
                 if (count[0] == resource.length) { //combinação existe no run i
                     countRun[0]++;
                     if(countCombinations.containsKey(Arrays.toString(resource))){
-                        int numberRuns = countCombinations.get(Arrays.toString(resource));
-                        countCombinations.put(Arrays.toString(resource), numberRuns + countRun[0]); //"update" do count da combinação
+                        ProcessCombinationModel combinationInfo = new ProcessCombinationModel();
+                        combinationInfo.numberOfRuns = countCombinations.get(Arrays.toString(resource)).numberOfRuns + countRun[0];
+                        combinationInfo.resourceLength = sumResourceLength;
+                        countCombinations.put(Arrays.toString(resource), combinationInfo); //"update" info about combination
                     }
-                    else {
-                        countCombinations.put(Arrays.toString(resource), countRun[0]);
+                    else { //create new one
+                        ProcessCombinationModel combinationInfo = new ProcessCombinationModel();
+                        combinationInfo.numberOfRuns = countRun[0];
+                        combinationInfo.resourceLength = sumResourceLength;
+                        countCombinations.put(Arrays.toString(resource), combinationInfo);
                     }
+                    sumResourceLength = 0;
                     count[0] = 0;
                     countRun[0] = 0;
                 }
                 else{ // esta combinação n existe no run i
                     if(countCombinations.containsKey(Arrays.toString(resource))){
-                        int numberRuns = countCombinations.get(Arrays.toString(resource));
-                        countCombinations.put(Arrays.toString(resource), numberRuns + countRun[0]);
+                        ProcessCombinationModel combinationInfo = new ProcessCombinationModel();
+                        combinationInfo.numberOfRuns = countCombinations.get(Arrays.toString(resource)).numberOfRuns + countRun[0];
+                        combinationInfo.resourceLength = sumResourceLength;
+                        countCombinations.put(Arrays.toString(resource), combinationInfo);
                     }
                     else {
-                        countCombinations.put(Arrays.toString(resource), countRun[0]); // insert combination with count 0
+                        ProcessCombinationModel combinationInfo = new ProcessCombinationModel();
+                        combinationInfo.numberOfRuns = countRun[0];
+                        combinationInfo.resourceLength = sumResourceLength;
+                        countCombinations.put(Arrays.toString(resource), combinationInfo); // insert combination with count 0
                     }
+                    sumResourceLength = 0;
                     count[0] = 0;
                     countRun[0] = 0;
                 }
             }
         }
-        csvWriter.SaveResourcesCombinationsProbabilities(countCombinations, filename, fileCount);
+        // calcular a probabilidade de cada recurso e dentro do outro ciclo verificar qd há vários casos com precentagens superiores
+        // a 50%
+        for(Map.Entry<String, ProcessCombinationModel> hashMap : countCombinations.entrySet()){
+           // if((double) Math.round(hashMap.getValue().numberOfRuns*100)/fileCount >=50) {
+                ResourceCombination resourceCombination = new ResourceCombination();
+                resourceCombination.combination = hashMap.getKey();
+                resourceCombination.percentage = (double) Math.round(hashMap.getValue().numberOfRuns * 100) / fileCount;
+                resourceCombination.resourceLength = hashMap.getValue().resourceLength;
+                resourcesCombinationList.add(resourceCombination);
+           // }
+        }
+
+       /* for(ResourceCombination combinationInfo : resourcesCombinationList){
+            if()
+        }*/
+        csvWriter.SaveResourcesCombinationsProbabilities(resourcesCombinationList, filename);
     }
 
     public void FillResourcesMap(String fileName) {
         int[] count = new int[]{0};
         int[] fileCount = new int[]{0};
         LinkedHashMap<String, ArrayList<ResourceInfo>> newTimeHarMap = new LinkedHashMap<String, ArrayList<ResourceInfo>>();
-        ArrayList<String> checkDuplicates = new ArrayList<String>();
         try {
             HarReader harReader = new HarReader();
             File file = new File("D:/Programas/XAMPP/htdocs/webbench/src/main/java/files/" + fileName + ".har");
@@ -220,6 +255,7 @@ public class HarFileModel {
                     resourceInfo.resourceType = entry.get_resourceType();
                     resourceInfo.cachedResource = entry.getResponse().getHeaders().get(0).getValue();
                     resourceInfo.harRun = fileCount[0];
+                    resourceInfo.resourceLength = entry.getResponse().getBodySize();
                     ArrayList<ResourceInfo> resourcesList = new ArrayList<>();
                     resourcesList.add(resourceInfo);
                     timeHarMap.put(entry.getRequest().getUrl(), resourcesList);
@@ -241,6 +277,7 @@ public class HarFileModel {
                                 resourceInfo.resourceTime = (float) otherEntry.getTime();
                                 resourceInfo.resourceType = otherEntry.get_resourceType();
                                 resourceInfo.cachedResource = otherEntry.getResponse().getHeaders().get(0).getValue();
+                                resourceInfo.resourceLength = otherEntry.getResponse().getBodySize();
                                 // Value update
                                 ArrayList<ResourceInfo> values = new ArrayList<>();
                                 values.addAll(timeHarMap.get(key));
@@ -261,6 +298,7 @@ public class HarFileModel {
                             resourceInfo.resourceTime = (float) otherEntry.getTime();
                             resourceInfo.resourceType = otherEntry.get_resourceType();
                             resourceInfo.cachedResource = otherEntry.getResponse().getHeaders().get(0).getValue();
+                            resourceInfo.resourceLength = otherEntry.getResponse().getBodySize();
                             resourceInfo.harRun = fileCount[0];
                             ArrayList<ResourceInfo> resourcesList = new ArrayList<>();
                             resourcesList.add(resourceInfo);
@@ -282,10 +320,7 @@ public class HarFileModel {
             // calculate time difference between all resources. FileCount = number of files
             calculateResourcesFromTests(newTimeHarMap, fileCount[0]);
             ArrayList<String> allResources = new ArrayList<>(newTimeHarMap.keySet());
-           // for(int i=1; i<= 5; i++) { //starts with combination [R1,R2]. Next iteration [R1,R2,R3]...
-                combinations(allResources, 5, 0, new String [5]);
-            //}
-
+            combinations(allResources, 41);
             calculateCombinationPercentage(newTimeHarMap, fileCount[0]);
         } catch (Exception ex) {
             // e.printStackTrace();

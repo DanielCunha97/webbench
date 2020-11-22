@@ -197,7 +197,6 @@ public class HarResponse {
             HarHeader header = (HarHeader)var2.next();
             header.writeHar(g);
         }
-
         g.writeEndArray();
 
         // this.queryString.writeHar(g);
@@ -206,7 +205,7 @@ public class HarResponse {
         }*/
 
         // g.writeNumberField("headersSize", this.headersSize);
-        // g.writeNumberField("bodySize", this.bodySize);
+        g.writeNumberField("bodySize", this.bodySize);
         if (this.comment != null) {
             g.writeStringField("comment", this.comment);
         }

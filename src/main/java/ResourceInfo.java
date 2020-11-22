@@ -6,4 +6,5 @@ public class ResourceInfo {
     public boolean repeatedCall;
     public String cachedResource;
     public Integer harRun;
+    public long resourceLength;
 }

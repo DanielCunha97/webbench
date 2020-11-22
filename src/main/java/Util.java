@@ -1,25 +1,18 @@
-import harreader.HarReader;
 import harreader.model.*;
 import harwriter.HarFileWriter;
 import org.codehaus.jackson.JsonParseException;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class Util {
     public static void analyzeLog(WebDriver driver) {
@@ -106,6 +99,7 @@ public class Util {
                                                     //System.out.println("CACHE: " + response.getBoolean("fromDiskCache"));
                                                     //System.out.println("prefetch cache: " + response.getBoolean("fromPrefetchCache"));
                                                     JSONObject responseHeader = response.getJSONObject("headers");
+                                                    HarResponse harResponse = new HarResponse();
                                                     if(responseHeader != null) {
                                                         String cachedResource = responseHeader.getString("cache-control");
                                                         List<HarHeader> harHeaders = new ArrayList<HarHeader>();
@@ -113,10 +107,11 @@ public class Util {
                                                         header.setName("cache-control");
                                                         header.setValue(cachedResource);
                                                         harHeaders.add(header);
-                                                        HarResponse harResponse = new HarResponse();
                                                         harResponse.setHeaders(harHeaders);
-                                                        entry.setResponse(harResponse);
                                                     }
+                                                    long resourceLength = response.getLong("encodedDataLength");
+                                                    harResponse.setBodySize(resourceLength);
+                                                    entry.setResponse(harResponse);
                                                     JSONObject times = response.getJSONObject("timing");
                                                     Double dnsTime = times.getDouble("dnsEnd") - times.getDouble("dnsStart");
                                                     Double sslTime = times.getDouble("sslEnd") - times.getDouble("sslStart");
