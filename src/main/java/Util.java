@@ -133,10 +133,10 @@ public class Util {
             }
 
             log.setEntries(entries);
-            File file = new File("D:/Programas/XAMPP/htdocs/webbench/src/main/java/files/" + fileName + ".har");
+            File file = new File("/Users/cunha/Downloads/webbench/src/main/java/files/" + fileName + ".har");
             while (file.exists()){
                 count[0]++;
-                file = new File("D:/Programas/XAMPP/htdocs/webbench/src/main/java/files/" + fileName + "_" + count[0] +".har");
+                file = new File("/Users/cunha/Downloads/webbench/src/main/java/files/" + fileName + "_" + count[0] +".har");
             }
             file.getParentFile().mkdirs();
             // FileWriter harFile = new FileWriter(file);

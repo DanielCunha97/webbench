@@ -1,3 +1,4 @@
+import harreader.HarReaderException;
 import org.apache.commons.lang3.time.StopWatch;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -28,11 +29,11 @@ public class TestExecutor {
     private TestLogger logger = new TestLogger();
     private CsvWriter csvWriter = new CsvWriter();
 
-    public TestExecutor(XMLParser test) throws IOException {
+    public TestExecutor(XMLParser test) throws IOException, HarReaderException {
         this.test= test;
         NodeList actions= test.getDocument().getElementsByTagName("selenese");
         ChromeOptions options = new ChromeOptions();
-        options.addExtensions(new File("D:/Documentos/Mestrado/dissertação/chromeDriver.crx"));
+        options.addExtensions(new File("/Users/cunha/Downloads/chromeDriver.crx"));
         // options.addArguments("–load-extension=" + "/Users/ruipedroduarte/Downloads/chromeDriver.crx");
         options.addArguments("--auto-open-devtools-for-tabs");
 

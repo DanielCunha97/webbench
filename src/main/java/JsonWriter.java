@@ -54,7 +54,7 @@ public class JsonWriter {
             JSONObject obj = new JSONObject();
             obj.put("nodes", node);
             obj.put("links",link);
-            FileWriter writer = new FileWriter(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/javascript/files/" + fileName + "ResourcesTimes.json"));
+            FileWriter writer = new FileWriter(new File("/Users/cunha/Downloads/webbench/src/main/java/files/" + fileName + "ResourcesTimes.json"));
             writer.write(obj.toJSONString());
             writer.close();
         } catch (Exception e) {

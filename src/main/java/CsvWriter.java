@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 public class CsvWriter {
@@ -20,7 +21,7 @@ public class CsvWriter {
         try {
             double totaltime = 0.0;
             // PrintWriter writer = new PrintWriter(new File("/Users/ruipedroduarte/IdeaProjects/webbench/src//main/javascript/files/DataToCharts.csv"));
-            PrintWriter writer = new PrintWriter(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/javascript/files/" + fileName + "DataToCharts.csv"));
+            PrintWriter writer = new PrintWriter(new File("/Users/cunha/Downloads/webbench/src/main/java/files/" + fileName + "DataToCharts.csv"));
             StringBuilder sb = new StringBuilder();
             sb.append("Operator");
             sb.append(';');
@@ -59,7 +60,7 @@ public class CsvWriter {
 
     public void SaveDiffResourcesTimes (ArrayList<ResourcesTimeModel> resourcesTimeModels, String fileName){
         try {
-            PrintWriter writer = new PrintWriter(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/javascript/files/" + fileName + "ResourcesTimes.csv"));
+            PrintWriter writer = new PrintWriter(new File("/Users/cunha/Downloads/webbench/src/main/java/files/" + fileName + "ResourcesTimes.csv"));
             StringBuilder sb = new StringBuilder();
             sb.append("First Resource");
             sb.append(';');
@@ -99,9 +100,9 @@ public class CsvWriter {
         }
     }
 
-    public void SaveResourcesCombinationsProbabilities (ArrayList<ResourceCombination> resourcesCombinationList, String fileName){
+    public void SaveResourcesCombinationsProbabilities (LinkedList<ProcessCombinationModel> resourcesCombinationList, String fileName){
         try {
-            PrintWriter writer = new PrintWriter(new File("D:/Programas/XAMPP/htdocs/webbench/src/main/javascript/files/" + fileName + "ResourcesCombinationProb.csv"));
+            PrintWriter writer = new PrintWriter(new File("/Users/cunha/Downloads/webbench/src/main/java/files/" + fileName + "ResourcesCombinationProb.csv"));
             StringBuilder sb = new StringBuilder();
             sb.append("Combination");
             sb.append(';');
@@ -109,7 +110,7 @@ public class CsvWriter {
             sb.append(';');
             sb.append("CombinationLength");
             sb.append('\n');
-            for(ResourceCombination combinationInfo : resourcesCombinationList){
+            for(ProcessCombinationModel combinationInfo : resourcesCombinationList){
                 sb.append(combinationInfo.combination + ";");
                 sb.append((double) Math.round(combinationInfo.percentage) + ";");
                 sb.append(combinationInfo.resourceLength + ";");
