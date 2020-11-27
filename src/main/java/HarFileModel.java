@@ -131,8 +131,8 @@ public class HarFileModel {
     private void calculateStatistics(ProcessCombinationModel combinationInfo, int fileCount){
         boolean resourceFound=false;
 
+        String[] resources = combinationInfo.combination.split(","); // resources of each combination
         for (int i =0; i < fileCount; i++) { //controlo por run
-            String[] resources = combinationInfo.combination.split(","); // resources of each combination
             for(String combinationResource : resources){
                 resourceFound=false;
                 for(ResourceInfo comb : timeHarMap.get(combinationResource))
@@ -151,7 +151,12 @@ public class HarFileModel {
         }
 
         combinationInfo.percentage = (float) combinationInfo.numberOfRuns/fileCount;
-        if(combinationInfo.percentage > 0.5) {
+
+        if(combinationInfo.percentage > 0.1) {
+            System.out.print("Combination + probability");
+            for(String s: resources) System.out.print(System.identityHashCode(s) + "  ");
+            System.out.print(combinationInfo.percentage + "\n");
+
             this.combinationStatistics.add(combinationInfo);
             System.out.println("Comb valida. Percentagem: " + combinationInfo.percentage);
         }
@@ -314,7 +319,7 @@ public class HarFileModel {
             }*/
             // calculate time difference between all resources. FileCount = number of files
             calculateResourcesFromTests(fileCount);
-            combinations(4, fileCount);
+            combinations(40, fileCount);
             //calculateCombinationPercentage(fileCount);
         } catch (Exception ex) {
             // e.printStackTrace();
