@@ -96,7 +96,8 @@ public class HarFileModel {
      * @param len
      * @param fileCount
      */
-    private void combinations(ArrayList<String> resources, int len, int fileCount){
+    private void combinations(int len, int fileCount){
+        ArrayList<String> resources= new ArrayList<>(timeHarMap.keySet());
         System.out.println("Número resources " + resources.size());
         Set<Set<String>> combinations = Sets.combinations(ImmutableSet.copyOf(resources), len);
         Set r;
@@ -105,9 +106,7 @@ public class HarFileModel {
         System.out.println("Número combinações " + combinations.size());
         int i = 0;
         while (combIterator.hasNext()){
-            System.out.println("Comb " + i++);
             r = (Set) combIterator.next();
-            //System.out.println("R size: "+ r.size());
 
             line.setLength(0);
             Iterator lineIterator = r.iterator();
@@ -115,10 +114,12 @@ public class HarFileModel {
                 if(line.length()>0) line.append(",");
                 line.append(lineIterator.next().toString());
             }
+            //System.out.println("comb: "+ line.toString());
 
             ProcessCombinationModel combinationInfo= new ProcessCombinationModel();
             combinationInfo.combination = line.toString();
             calculateStatistics(combinationInfo,fileCount);
+            if(i++%100000==0) System.out.println("Comb " + i);
         }
     }
 
@@ -141,12 +142,19 @@ public class HarFileModel {
                         break;
                     }
                 if(! resourceFound){ break;}
-                combinationInfo.numberOfRuns ++;
             }
+            if(resourceFound){
+                combinationInfo.numberOfRuns++;
+                //System.out.println("Combinação encontrada... runs: " + combinationInfo.numberOfRuns);
+            }
+            //System.out.println("----run " + i);
         }
-        combinationInfo.percentage = combinationInfo.numberOfRuns/fileCount;
-        if(combinationInfo.percentage > 0.5)
+
+        combinationInfo.percentage = (float) combinationInfo.numberOfRuns/fileCount;
+        if(combinationInfo.percentage > 0.5) {
             this.combinationStatistics.add(combinationInfo);
+            System.out.println("Comb valida. Percentagem: " + combinationInfo.percentage);
+        }
     }
 
 
@@ -306,8 +314,7 @@ public class HarFileModel {
             }*/
             // calculate time difference between all resources. FileCount = number of files
             calculateResourcesFromTests(fileCount);
-            ArrayList<String> allResources = new ArrayList<>(timeHarMap.keySet());
-            combinations(allResources, 41, fileCount);
+            combinations(4, fileCount);
             //calculateCombinationPercentage(fileCount);
         } catch (Exception ex) {
             // e.printStackTrace();
