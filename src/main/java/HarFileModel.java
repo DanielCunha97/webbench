@@ -152,7 +152,7 @@ public class HarFileModel {
 
         combinationInfo.percentage = (float) combinationInfo.numberOfRuns/fileCount;
 
-        if(combinationInfo.percentage > 0.1) {
+        if(combinationInfo.percentage > 0.5) {
             System.out.print("Combination + probability");
             for(String s: resources) System.out.print(System.identityHashCode(s) + "  ");
             System.out.print(combinationInfo.percentage + "\n");
@@ -319,7 +319,7 @@ public class HarFileModel {
             }*/
             // calculate time difference between all resources. FileCount = number of files
             calculateResourcesFromTests(fileCount);
-            combinations(40, fileCount);
+            combinations(5, fileCount);
             //calculateCombinationPercentage(fileCount);
         } catch (Exception ex) {
             // e.printStackTrace();
